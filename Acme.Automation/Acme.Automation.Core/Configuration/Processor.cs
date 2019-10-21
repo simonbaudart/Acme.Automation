@@ -12,7 +12,7 @@ namespace Acme.Automation.Core.Configuration
     /// Represents a connector that can be executed from a job.
     /// </summary>
     [DataContract]
-    public class Processor : BaseConfigurationItem
+    public class Processor : BaseTypedConfigurationItem
     {
     }
 }

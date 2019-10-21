@@ -10,6 +10,7 @@ namespace Acme.Automation.SimpleRunner
     using System.Reflection;
     using System.Xml;
 
+    using Acme.Automation.Core;
     using Acme.Automation.Core.Configuration;
 
     using log4net;
@@ -39,6 +40,7 @@ namespace Acme.Automation.SimpleRunner
             Log.Info("START CONSOLE");
 
             var configuration = AutomationConfiguration.Read("C:\\TMP\\SBA\\Acme.Automation.json");
+            configuration.Jobs.Where(job => job.RunAtStartup).ToList().ForEach(job => new Worker().Execute(configuration, job));
 
             Log.Info("STOP CONSOLE");
         }

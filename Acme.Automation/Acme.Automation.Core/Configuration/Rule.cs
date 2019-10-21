@@ -12,7 +12,7 @@ namespace Acme.Automation.Core.Configuration
     /// Represents a rule that can must be checked.
     /// </summary>
     [DataContract]
-    public class Rule : BaseConfigurationItem
+    public class Rule : BaseTypedConfigurationItem
     {
     }
 }
