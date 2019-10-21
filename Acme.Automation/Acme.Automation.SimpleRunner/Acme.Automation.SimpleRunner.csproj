@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp2.2</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Acme.Automation.Connectors\Acme.Automation.Connectors.csproj" />
+      <ProjectReference Include="..\Acme.Automation.Core\Acme.Automation.Core.csproj" />
+      <ProjectReference Include="..\Acme.Automation.Processors\Acme.Automation.Processors.csproj" />
+      <ProjectReference Include="..\Acme.Automation.Rules\Acme.Automation.Rules.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Acme.Core.Extensions" Version="1.1.0" />
+      <PackageReference Include="log4net" Version="2.0.8" />
+      <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="log4net.config" />
+      <Content Include="log4net.config">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
+</Project>
