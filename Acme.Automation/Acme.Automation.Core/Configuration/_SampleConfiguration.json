@@ -1,31 +1,43 @@
 {
   "jobs": [
     {
-      "id" : "uniqueidentifierforthejob",
-      "friendlyName" : "This is shown when user must see a name",
-      "runAtStartup": false,
-      "cronSchedule" : null,
-      "connector" : "idoftheconnectortofetch",
-      "rule" : "idoftheruletomatch",
-      "processor" : "idoftheprocessortorun"
+      "id": "curve-to-wallet",
+      "friendlyName": "Import Curve into Wallet",
+      "runAtStartup": true,
+      "cronSchedule": null,
+      "connector": "pop-automation",
+      "actions" : [
+        {
+          "rule" : "always-match",
+          "processor" :"dump-data"
+        }
+      ]
     }
   ],
   "connectors" : [
     {
-      "id": "uniqueidentifierfortheconnector",
-      "friendlyName": "This is shown when user must see a name"
+      "id": "pop-automation",
+      "friendlyName": "Get emails from xxxxxxxx@yyyyyyyyyyyyyyy.com",
+      "type" : "Acme.Automation.Connectors.Pop3Connector, Acme.Automation.Connectors",
+      "config" : {
+        "host": "smtp.yyyyyyyyyyyyyyy.com",
+        "port": 995,
+        "useSsl": true,
+        "username": "xxxxxxxx@yyyyyyyyyyyyyyy.com",
+        "password": "************************"
+      }
     }
   ],
   "rules" : [
     {
-      "id": "uniqueidentifierfortherules",
-      "friendlyName": "This is shown when user must see a name"
+      "id": "always-match",
+      "friendlyName": "Always return true"
     }
   ],
   "processors" : [
     {
-      "id": "uniqueidentifierfortheprocessor",
-      "friendlyName": "This is shown when user must see a name"
+      "id": "dump-data",
+      "friendlyName": "Dump data to the console"
     }
   ]
 }

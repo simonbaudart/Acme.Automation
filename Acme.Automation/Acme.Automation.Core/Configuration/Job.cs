@@ -39,17 +39,9 @@ namespace Acme.Automation.Core.Configuration
         public string Connector { get; set; }
 
         /// <summary>
-        /// Gets or sets the Rules.
+        /// Gets or sets the actions.
         /// </summary>
-        /// <value>The Rule.</value>
-        [DataMember(Name = "rules")]
-        public List<string> Rules { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Processors.
-        /// </summary>
-        /// <value>The Processor.</value>
-        [DataMember(Name = "processors")]
-        public List<string> Processors { get; set; }
+        [DataMember(Name = "actions")]
+        public List<Action> Actions { get; set; }
     }
 }
