@@ -87,12 +87,8 @@ namespace Acme.Automation.Core.Configuration
 
                 job?.Actions?.ForEach(action =>
                 {
-                    var rule = this.Rules?.SingleOrDefault(x => x.Id == action.Rule);
-
-                    if (rule == null)
-                    {
-                        throw new ConfigurationException($"The rule {action.Rule} cannot be found");
-                    }
+                    var rule = this.Rules?.SingleOrDefault(x => x.Id == action.Rule) ??
+                               throw new ConfigurationException($"The rule {action.Rule} cannot be found");
 
                     var processor = this.Processors?.SingleOrDefault(x => x.Id == action.Processor);
 
