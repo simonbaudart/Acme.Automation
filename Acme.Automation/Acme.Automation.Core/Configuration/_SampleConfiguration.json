@@ -1,0 +1,31 @@
+{
+  "jobs": [
+    {
+      "id" : "uniqueidentifierforthejob",
+      "friendlyName" : "This is shown when user must see a name",
+      "runAtStartup": false,
+      "cronSchedule" : null,
+      "connector" : "idoftheconnectortofetch",
+      "rule" : "idoftheruletomatch",
+      "processor" : "idoftheprocessortorun"
+    }
+  ],
+  "connectors" : [
+    {
+      "id": "uniqueidentifierfortheconnector",
+      "friendlyName": "This is shown when user must see a name"
+    }
+  ],
+  "rules" : [
+    {
+      "id": "uniqueidentifierfortherules",
+      "friendlyName": "This is shown when user must see a name"
+    }
+  ],
+  "processors" : [
+    {
+      "id": "uniqueidentifierfortheprocessor",
+      "friendlyName": "This is shown when user must see a name"
+    }
+  ]
+}
