@@ -78,26 +78,32 @@ namespace Acme.Automation.Core.Configuration
         {
             this.Jobs?.ForEach(job =>
             {
-                var connector = this.Connectors.SingleOrDefault(x => x.Id == job.Connector);
+                var connector = this.Connectors?.SingleOrDefault(x => x.Id == job.Connector);
 
                 if (connector == null)
                 {
                     throw new ConfigurationException($"The connector {job.Connector} cannot be found");
                 }
 
-                var rule = this.Rules.SingleOrDefault(x => x.Id == job.Rule);
-
-                if (rule == null)
+                job.Rules?.ForEach(ruleName =>
                 {
-                    throw new ConfigurationException($"The rule {job.Rule} cannot be found");
-                }
+                    var rule = this.Rules?.SingleOrDefault(x => x.Id == ruleName);
 
-                var processor = this.Processors.SingleOrDefault(x => x.Id == job.Processor);
+                    if (rule == null)
+                    {
+                        throw new ConfigurationException($"The rule {ruleName} cannot be found");
+                    }
+                });
 
-                if (processor == null)
+                job.Processors?.ForEach(processorName =>
                 {
-                    throw new ConfigurationException($"The processor {job.Processor} cannot be found");
-                }
+                    var processor = this.Processors?.SingleOrDefault(x => x.Id == processorName);
+
+                    if (processor == null)
+                    {
+                        throw new ConfigurationException($"The processor {processorName} cannot be found");
+                    }
+                });
             });
         }
     }

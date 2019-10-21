@@ -5,6 +5,7 @@
 namespace Acme.Automation.Core.Configuration
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Runtime.Serialization;
 
@@ -38,17 +39,17 @@ namespace Acme.Automation.Core.Configuration
         public string Connector { get; set; }
 
         /// <summary>
-        /// Gets or sets the Rule.
+        /// Gets or sets the Rules.
         /// </summary>
         /// <value>The Rule.</value>
-        [DataMember(Name = "rule")]
-        public string Rule { get; set; }
+        [DataMember(Name = "rules")]
+        public List<string> Rules { get; set; }
 
         /// <summary>
-        /// Gets or sets the Processor.
+        /// Gets or sets the Processors.
         /// </summary>
         /// <value>The Processor.</value>
-        [DataMember(Name = "processor")]
-        public string Processor { get; set; }
+        [DataMember(Name = "processors")]
+        public List<string> Processors { get; set; }
     }
 }
