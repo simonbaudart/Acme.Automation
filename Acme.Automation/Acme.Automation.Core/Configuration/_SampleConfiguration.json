@@ -31,13 +31,15 @@
   "rules" : [
     {
       "id": "always-match",
-      "friendlyName": "Always return true"
+      "friendlyName": "Always return true",
+      "type": "Acme.Automation.Rules.AlwaysMatch, Acme.Automation.Rules"
     }
   ],
   "processors" : [
     {
       "id": "dump-data",
-      "friendlyName": "Dump data to the console"
+      "friendlyName": "Dump data to the console",
+      "type": "Acme.Automation.Processors.DumpData, Acme.Automation.Processors"
     }
   ]
 }

@@ -6,6 +6,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Acme.Automation.SimpleRunne
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Acme.Automation.Connectors", "Acme.Automation.Connectors\Acme.Automation.Connectors.csproj", "{F859BD2E-1A58-415F-95D0-1052212BC5C8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Acme.Automation.Rules", "Acme.Automation.Rules\Acme.Automation.Rules.csproj", "{72CEADCF-DB6A-4C80-A239-9CDDD556C3E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Acme.Automation.Processors", "Acme.Automation.Processors\Acme.Automation.Processors.csproj", "{9747A1C3-1EDB-4F5F-9BDE-FFD8A49B9600}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +28,13 @@ Global
 		{F859BD2E-1A58-415F-95D0-1052212BC5C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F859BD2E-1A58-415F-95D0-1052212BC5C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F859BD2E-1A58-415F-95D0-1052212BC5C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72CEADCF-DB6A-4C80-A239-9CDDD556C3E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72CEADCF-DB6A-4C80-A239-9CDDD556C3E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72CEADCF-DB6A-4C80-A239-9CDDD556C3E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72CEADCF-DB6A-4C80-A239-9CDDD556C3E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9747A1C3-1EDB-4F5F-9BDE-FFD8A49B9600}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9747A1C3-1EDB-4F5F-9BDE-FFD8A49B9600}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9747A1C3-1EDB-4F5F-9BDE-FFD8A49B9600}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9747A1C3-1EDB-4F5F-9BDE-FFD8A49B9600}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

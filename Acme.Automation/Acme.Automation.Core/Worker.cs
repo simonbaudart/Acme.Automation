@@ -41,9 +41,77 @@ namespace Acme.Automation.Core
             var connector = this.GetConnector(connectorConfiguration);
             var messages = connector.Execute(connectorConfiguration.Config);
 
+            foreach (var action in job.Actions)
+            {
+                var ruleConfiguration = configuration.Rules.SingleOrDefault(x => x.Id == action.Rule);
+                if (ruleConfiguration == null)
+                {
+                    throw new ConfigurationException($"The connector {action.Rule} cannot be found");
+                }
+
+                var processorConfiguration = configuration.Processors.SingleOrDefault(x => x.Id == action.Processor);
+                if (processorConfiguration == null)
+                {
+                    throw new ConfigurationException($"The processor {action.Processor} cannot be found");
+                }
+
+                var rule = this.GetRule(ruleConfiguration);
+                var processor = this.GetProcessor(processorConfiguration);
+
+                foreach (var message in messages)
+                {
+                    if (rule.IsMatch(ruleConfiguration.Config, message))
+                    {
+                        processor.Execute(processorConfiguration.Config, message);
+                    }
+                }
+            }
+
             Log.Info($"{messages.Count} retrieved from the connector");
 
             Log.Info($"Done with the job : {job.FriendlyName}");
+        }
+
+        private IProcessor GetProcessor(Processor processorConfiguration)
+        {
+            processorConfiguration.ThrowIfNull(nameof(processorConfiguration));
+
+            var processorType = Type.GetType(processorConfiguration.Type);
+
+            if (processorType == null)
+            {
+                throw new ConfigurationException($"The processor type {processorConfiguration.Type} cannot be found");
+            }
+
+            var processor = Activator.CreateInstance(processorType) as IProcessor;
+
+            if (processor == null)
+            {
+                throw new ConfigurationException($"The processor type {processorConfiguration.Type} does not implement IConnector");
+            }
+
+            return processor;
+        }
+
+        private IRule GetRule(Rule ruleConfiguration)
+        {
+            ruleConfiguration.ThrowIfNull(nameof(ruleConfiguration));
+
+            var ruleType = Type.GetType(ruleConfiguration.Type);
+
+            if (ruleType == null)
+            {
+                throw new ConfigurationException($"The rule type {ruleConfiguration.Type} cannot be found");
+            }
+
+            var rule = Activator.CreateInstance(ruleType) as IRule;
+
+            if (rule == null)
+            {
+                throw new ConfigurationException($"The rule type {ruleConfiguration.Type} does not implement IConnector");
+            }
+
+            return rule;
         }
 
         /// <summary>
