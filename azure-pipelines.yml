@@ -5,6 +5,12 @@
 
 trigger:
 - master
+- develop
+
+pr:
+- master
+- develop
+- releases/*
 
 pool:
   vmImage: 'windows-latest'
