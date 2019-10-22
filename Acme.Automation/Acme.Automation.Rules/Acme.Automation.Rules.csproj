@@ -12,6 +12,7 @@
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
       <DebugSymbols>true</DebugSymbols>
       <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+      <DocumentationFile>bin\Release\Acme.Automation.Rules.xml</DocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
