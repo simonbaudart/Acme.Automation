@@ -39,7 +39,8 @@ namespace Acme.Automation.SimpleRunner
 
             Log.Info("START CONSOLE");
 
-            var configuration = AutomationConfiguration.Read("configuration.json");
+            var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "configuration.json");
+            var configuration = AutomationConfiguration.Read(path);
             foreach (var job in configuration.Jobs.Where(job => job.RunAtStartup))
             {
                 new Worker().Execute(configuration, job);

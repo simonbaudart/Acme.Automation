@@ -50,8 +50,12 @@ namespace Acme.Automation.Core
 
                 foreach (var message in messages)
                 {
-                    if (rule.IsMatch(ruleConfiguration.Config, message))
+                    var ruleMatch = rule.IsMatch(ruleConfiguration.Config, message);
+                    Log.Debug($"The rule {ruleConfiguration.FriendlyName} returns : {ruleMatch}");
+
+                    if (ruleMatch)
                     {
+                        Log.Info($"Executing the processor : {processorConfiguration.FriendlyName}");
                         processor.Execute(processorConfiguration.Config, message);
                     }
                 }
