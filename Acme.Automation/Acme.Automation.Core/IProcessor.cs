@@ -1,11 +1,17 @@
-//  <copyright file="IProcessor.cs" company="Acme">
-//  Copyright (c) Acme. All rights reserved.
-//  </copyright>
+// <copyright file="IProcessor.cs" company="Acme">
+// Copyright (c) Acme. All rights reserved.
+// </copyright>
 
 namespace Acme.Automation.Core
 {
+    using System;
+    using System.Linq;
+
     using Newtonsoft.Json.Linq;
 
+    /// <summary>
+    /// Contract for a processor.
+    /// </summary>
     public interface IProcessor
     {
         /// <summary>

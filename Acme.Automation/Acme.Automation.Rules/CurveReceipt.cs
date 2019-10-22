@@ -1,6 +1,6 @@
-//  <copyright file="CurveReceipt.cs" company="Acme">
-//  Copyright (c) Acme. All rights reserved.
-//  </copyright>
+// <copyright file="CurveReceipt.cs" company="Acme">
+// Copyright (c) Acme. All rights reserved.
+// </copyright>
 
 namespace Acme.Automation.Rules
 {

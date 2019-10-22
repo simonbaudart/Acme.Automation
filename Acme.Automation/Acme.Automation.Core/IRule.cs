@@ -1,6 +1,6 @@
-//  <copyright file="IRule.cs" company="Acme">
-//  Copyright (c) Acme. All rights reserved.
-//  </copyright>
+// <copyright file="IRule.cs" company="Acme">
+// Copyright (c) Acme. All rights reserved.
+// </copyright>
 
 namespace Acme.Automation.Core
 {
@@ -9,6 +9,9 @@ namespace Acme.Automation.Core
 
     using Newtonsoft.Json.Linq;
 
+    /// <summary>
+    /// Contract for a rule.
+    /// </summary>
     public interface IRule
     {
         /// <summary>

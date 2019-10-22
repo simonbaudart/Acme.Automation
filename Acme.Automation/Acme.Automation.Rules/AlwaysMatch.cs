@@ -1,9 +1,12 @@
-//  <copyright file="AlwaysMatch.cs" company="Acme">
-//  Copyright (c) Acme. All rights reserved.
-//  </copyright>
+// <copyright file="AlwaysMatch.cs" company="Acme">
+// Copyright (c) Acme. All rights reserved.
+// </copyright>
 
 namespace Acme.Automation.Rules
 {
+    using System;
+    using System.Linq;
+
     using Acme.Automation.Core;
 
     using Newtonsoft.Json.Linq;
