@@ -26,6 +26,11 @@ namespace Acme.Automation.Connectors
         /// </summary>
         private static readonly ILog Log = LogManager.GetLogger(typeof(Pop3Connector));
 
+        /// <summary>
+        /// Execute the pop3 worker.
+        /// </summary>
+        /// <param name="config">The config for the connector.</param>
+        /// <returns>List of all messages.</returns>
         public List<Message> Execute(JToken config)
         {
             Log.Info("START THE POP3 WORKER");
