@@ -22,33 +22,33 @@ namespace Acme.Automation.Core.Configuration
     public class AutomationConfiguration
     {
         /// <summary>
-        /// Gets or sets the Connectors.
+        /// Gets the Connectors.
         /// </summary>
         /// <value>The Connectors.</value>
         [DataMember(Name = "connectors")]
-        public List<Connector> Connectors { get; set; }
+        public List<Connector> Connectors { get; } = new List<Connector>();
 
         /// <summary>
-        /// Gets or sets the jobs.
+        /// Gets the jobs.
         /// Jobs are intended to run at startup and/or being scheduled.
         /// </summary>
         /// <value>The jobs.</value>
         [DataMember(Name = "jobs")]
-        public List<Job> Jobs { get; set; }
+        public List<Job> Jobs { get; } = new List<Job>();
 
         /// <summary>
-        /// Gets or sets the Processors.
+        /// Gets the Processors.
         /// </summary>
         /// <value>The Processors.</value>
         [DataMember(Name = "processors")]
-        public List<Processor> Processors { get; set; }
+        public List<Processor> Processors { get; } = new List<Processor>();
 
         /// <summary>
-        /// Gets or sets the Rules.
+        /// Gets the Rules.
         /// </summary>
         /// <value>The Rules.</value>
         [DataMember(Name = "rules")]
-        public List<Rule> Rules { get; set; }
+        public List<Rule> Rules { get; } = new List<Rule>();
 
         /// <summary>
         /// Read the configuration from a file.
@@ -76,21 +76,21 @@ namespace Acme.Automation.Core.Configuration
         /// </summary>
         public void EnsureValidity()
         {
-            this.Jobs?.ForEach(job =>
+            this.Jobs.ForEach(job =>
             {
-                var connector = this.Connectors?.SingleOrDefault(x => x.Id == job.Connector);
+                var connector = this.Connectors.SingleOrDefault(x => x.Id == job.Connector);
 
                 if (connector == null)
                 {
                     throw new ConfigurationException($"The connector {job.Connector} cannot be found");
                 }
 
-                job?.Actions?.ForEach(action =>
+                job.Actions.ForEach(action =>
                 {
-                    var rule = this.Rules?.SingleOrDefault(x => x.Id == action.Rule) ??
+                    var rule = this.Rules.SingleOrDefault(x => x.Id == action.Rule) ??
                                throw new ConfigurationException($"The rule {action.Rule} cannot be found");
 
-                    var processor = this.Processors?.SingleOrDefault(x => x.Id == action.Processor);
+                    var processor = this.Processors.SingleOrDefault(x => x.Id == action.Processor);
 
                     if (processor == null)
                     {

@@ -31,7 +31,7 @@ namespace Acme.Automation.Core
         {
             Log.Info($"Starting the job : {job.FriendlyName}");
 
-            var connectorConfiguration = configuration.Connectors?.SingleOrDefault(x => x.Id == job.Connector) ??
+            var connectorConfiguration = configuration.Connectors.SingleOrDefault(x => x.Id == job.Connector) ??
                                          throw new ConfigurationException($"The connector {job.Connector} cannot be found");
 
             var connector = this.GetConnector(connectorConfiguration);
