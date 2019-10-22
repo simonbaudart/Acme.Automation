@@ -9,7 +9,7 @@ namespace Acme.Automation.Rules
     using Newtonsoft.Json.Linq;
 
     /// <summary>
-    /// This rule ... always match ! Yeah, really !
+    /// This rule ... always match ! Yeah, really !.
     /// </summary>
     public class AlwaysMatch : IRule
     {

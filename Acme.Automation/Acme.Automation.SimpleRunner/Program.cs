@@ -1,10 +1,9 @@
-﻿//  <copyright file="Program.cs" company="Acme">
-//  Copyright (c) Acme. All rights reserved.
-//  </copyright>
+﻿// <copyright file="Program.cs" company="Acme">
+// Copyright (c) Acme. All rights reserved.
+// </copyright>
 
 namespace Acme.Automation.SimpleRunner
 {
-    using System;
     using System.IO;
     using System.Linq;
     using System.Reflection;
@@ -17,12 +16,13 @@ namespace Acme.Automation.SimpleRunner
     using log4net.Config;
     using log4net.Repository.Hierarchy;
 
-    using Newtonsoft.Json;
-
+    /// <summary>
+    /// Main entry point for SimpleRunner.
+    /// </summary>
     internal class Program
     {
         /// <summary>
-        /// Define the logger
+        /// Define the logger.
         /// </summary>
         private static readonly ILog Log = LogManager.GetLogger(typeof(Program));
 
@@ -39,8 +39,11 @@ namespace Acme.Automation.SimpleRunner
 
             Log.Info("START CONSOLE");
 
-            var configuration = AutomationConfiguration.Read("C:\\TMP\\SBA\\Acme.Automation.json");
-            configuration.Jobs.Where(job => job.RunAtStartup).ToList().ForEach(job => new Worker().Execute(configuration, job));
+            var configuration = AutomationConfiguration.Read("configuration.json");
+            foreach (var job in configuration.Jobs.Where(job => job.RunAtStartup))
+            {
+                new Worker().Execute(configuration, job);
+            }
 
             Log.Info("STOP CONSOLE");
         }

@@ -1,12 +1,10 @@
-//  <copyright file="Message.cs" company="Acme">
-//  Copyright (c) Acme. All rights reserved.
-//  </copyright>
+// <copyright file="Message.cs" company="Acme">
+// Copyright (c) Acme. All rights reserved.
+// </copyright>
 
 namespace Acme.Automation.Core
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     using Newtonsoft.Json.Linq;
 
