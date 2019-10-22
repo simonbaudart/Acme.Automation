@@ -16,17 +16,11 @@ namespace Acme.Automation.Core
     public class Message
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Message" />
+        /// Gets the items.
         /// </summary>
-        public Message()
-        {
-            this.Items = new Dictionary<string, JToken>();
-        }
-
-        /// <summary>
-        /// Gets or sets the Items.
-        /// </summary>
-        /// <value>The Items.</value>
-        public Dictionary<string, JToken> Items { get; set; }
+        /// <value>
+        /// The Items.
+        /// </value>
+        public Dictionary<string, JToken> Items { get; } = new Dictionary<string, JToken>();
     }
 }

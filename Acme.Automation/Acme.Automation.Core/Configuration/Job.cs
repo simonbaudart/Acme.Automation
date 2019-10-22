@@ -39,9 +39,9 @@ namespace Acme.Automation.Core.Configuration
         public string Connector { get; set; }
 
         /// <summary>
-        /// Gets or sets the actions.
+        /// Gets the actions.
         /// </summary>
         [DataMember(Name = "actions")]
-        public List<Action> Actions { get; set; }
+        public List<Action> Actions { get; } = new List<Action>();
     }
 }
