@@ -330,22 +330,8 @@ ASALocalRun/
 /kiid
 /locks
 /Thumbs.db
-/PrismPhoto.Gallery.Web/App_Data/TEMP
-/PrismPhoto.Gallery.Web/App_Data/Logs
-/PrismPhoto.Gallery.Web/App_Data/cache
-/PrismPhoto.Gallery.Web/App_Data/Models
-/PrismPhoto.Gallery.Web/App_Data/umbraco.config
-/PrismPhoto.Gallery.Web/App_Data/Prism
-
-/PrismPhoto.Gallery.Web/Media/**/*
 
 **/.tscache/
 **/NuGetBackup
-/Prism.MentalUp.Web/App_Data/Logs
-/Prism.MentalUp.Web/App_Data/TEMP
-/Prism.MentalUp.Web/App_Data/umbraco.config
-/Prism.MentalUp.Web/App_Data/cache
-/Prism.MentalUp.Web/App_Data/Models
-/Funcky.Security.CameraCloudCenter/wwwroot/dist/app.bundle.js
-*.js
+
 /Acme.Automation/Acme.Automation.SimpleRunner/configuration.json
