@@ -1,12 +1,10 @@
-//  <copyright file="Job.cs" company="Acme">
-//  Copyright (c) Acme. All rights reserved.
-//  </copyright>
+// <copyright file="Job.cs" company="Acme">
+// Copyright (c) Acme. All rights reserved.
+// </copyright>
 
 namespace Acme.Automation.Core.Configuration
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Runtime.Serialization;
 
     /// <summary>
@@ -16,12 +14,17 @@ namespace Acme.Automation.Core.Configuration
     public class Job : BaseConfigurationItem
     {
         /// <summary>
-        /// Gets or sets the RunAtStartup.
-        /// If true, when the host start, it should run this job.
+        /// Gets the actions.
         /// </summary>
-        /// <value>The RunAtStartup.</value>
-        [DataMember(Name = "runAtStartup")]
-        public bool RunAtStartup { get; set; }
+        [DataMember(Name = "actions")]
+        public List<Action> Actions { get; } = new List<Action>();
+
+        /// <summary>
+        /// Gets or sets the Connector.
+        /// </summary>
+        /// <value>The Connector.</value>
+        [DataMember(Name = "connector")]
+        public string Connector { get; set; }
 
         /// <summary>
         /// Gets or sets the CronSchedule.
@@ -32,16 +35,11 @@ namespace Acme.Automation.Core.Configuration
         public string CronSchedule { get; set; }
 
         /// <summary>
-        /// Gets or sets the Connector.
+        /// Gets or sets a value indicating whether the job runs at startup.
+        /// If true, when the host start, it should run this job.
         /// </summary>
-        /// <value>The Connector.</value>
-        [DataMember(Name = "connector")]
-        public string Connector { get; set; }
-
-        /// <summary>
-        /// Gets the actions.
-        /// </summary>
-        [DataMember(Name = "actions")]
-        public List<Action> Actions { get; } = new List<Action>();
+        /// <value>The RunAtStartup.</value>
+        [DataMember(Name = "runAtStartup")]
+        public bool RunAtStartup { get; set; }
     }
 }

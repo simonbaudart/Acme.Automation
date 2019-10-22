@@ -1,6 +1,6 @@
-//  <copyright file="Worker.cs" company="Acme">
-//  Copyright (c) Acme. All rights reserved.
-//  </copyright>
+// <copyright file="Worker.cs" company="Acme">
+// Copyright (c) Acme. All rights reserved.
+// </copyright>
 
 namespace Acme.Automation.Core
 {
@@ -18,7 +18,7 @@ namespace Acme.Automation.Core
     public class Worker
     {
         /// <summary>
-        /// Define the logger
+        /// Define the logger.
         /// </summary>
         private static readonly ILog Log = LogManager.GetLogger(typeof(Worker));
 
@@ -66,6 +66,22 @@ namespace Acme.Automation.Core
             Log.Info($"Done with the job : {job.FriendlyName}");
         }
 
+        /// <summary>
+        /// Get a connector with reflection.
+        /// </summary>
+        /// <param name="connectorConfiguration">The connector to be found.</param>
+        /// <returns>The connector.</returns>
+        private IConnector GetConnector(Connector connectorConfiguration)
+        {
+            connectorConfiguration.ThrowIfNull(nameof(connectorConfiguration));
+
+            var connectorType = Type.GetType(connectorConfiguration.Type) ??
+                                throw new ConfigurationException($"The connector type {connectorConfiguration.Type} cannot be found");
+
+            return Activator.CreateInstance(connectorType) as IConnector ??
+                   throw new ConfigurationException($"The connector type {connectorConfiguration.Type} does not implement IConnector");
+        }
+
         private IProcessor GetProcessor(Processor processorConfiguration)
         {
             processorConfiguration.ThrowIfNull(nameof(processorConfiguration));
@@ -86,22 +102,6 @@ namespace Acme.Automation.Core
 
             return Activator.CreateInstance(ruleType) as IRule ??
                    throw new ConfigurationException($"The rule type {ruleConfiguration.Type} does not implement IConnector");
-        }
-
-        /// <summary>
-        /// Get a connector with reflection.
-        /// </summary>
-        /// <param name="connectorConfiguration">The connector to be found.</param>
-        /// <returns>The connector.</returns>
-        private IConnector GetConnector(Connector connectorConfiguration)
-        {
-            connectorConfiguration.ThrowIfNull(nameof(connectorConfiguration));
-
-            var connectorType = Type.GetType(connectorConfiguration.Type) ?? 
-                                throw new ConfigurationException($"The connector type {connectorConfiguration.Type} cannot be found");
-
-            return Activator.CreateInstance(connectorType) as IConnector ??
-                   throw new ConfigurationException($"The connector type {connectorConfiguration.Type} does not implement IConnector");
         }
     }
 }

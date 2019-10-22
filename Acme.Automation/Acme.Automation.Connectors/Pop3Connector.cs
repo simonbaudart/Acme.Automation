@@ -1,6 +1,6 @@
-//  <copyright file="Pop3Connector.cs" company="Acme">
-//  Copyright (c) Acme. All rights reserved.
-//  </copyright>
+// <copyright file="Pop3Connector.cs" company="Acme">
+// Copyright (c) Acme. All rights reserved.
+// </copyright>
 
 namespace Acme.Automation.Connectors
 {
@@ -15,32 +15,20 @@ namespace Acme.Automation.Connectors
     using MailKit;
     using MailKit.Net.Pop3;
 
-    using Newtonsoft.Json.Linq;
-
     /// <summary>
+    /// <see cref="Pop3Connector"/>.
     /// </summary>
-    public class Pop3Connector : IConnector
+    public class Pop3Connector : BaseConnector<Pop3ConnectorConfig>
     {
         /// <summary>
-        /// Define the logger
+        /// Define the logger.
         /// </summary>
         private static readonly ILog Log = LogManager.GetLogger(typeof(Pop3Connector));
 
-        public List<Message> Execute(JToken config)
+        /// <inheritdoc />
+        public override List<Message> Execute(Pop3ConnectorConfig configuration)
         {
-            Log.Info("START THE POP3 WORKER");
-
-            var pop3Settings = config.ToObject<Pop3ConnectorConfig>();
-            var emails = this.FetchEmails(pop3Settings);
-
-            Log.Info("END THE POP3 WORKER");
-
-            return emails;
-        }
-
-        private List<Message> FetchEmails(Pop3ConnectorConfig pop3Settings)
-        {
-            Log.Debug($"Fetching the emails from {pop3Settings.Host}:{pop3Settings.Port}");
+            Log.Debug($"Fetching the emails from {configuration.Host}:{configuration.Port}");
 
             var messages = new List<Message>();
 
@@ -48,8 +36,8 @@ namespace Acme.Automation.Connectors
             {
                 using (var popClient = new Pop3Client(new ProtocolLogger("pop3.txt")))
                 {
-                    popClient.Connect(pop3Settings.Host, pop3Settings.Port, pop3Settings.UseSsl);
-                    popClient.Authenticate(pop3Settings.UserName, pop3Settings.Password);
+                    popClient.Connect(configuration.Host, configuration.Port, configuration.UseSsl);
+                    popClient.Authenticate(configuration.UserName, configuration.Password);
 
                     Log.Debug($"Number of available messages = {popClient.Count}");
                     var numberOfMessageToProcess = Math.Min(popClient.Count, 10);
