@@ -31,29 +31,19 @@ namespace Acme.Automation.Core
         {
             Log.Info($"Starting the job : {job.FriendlyName}");
 
-            var connectorConfiguration = configuration.Connectors?.SingleOrDefault(x => x.Id == job.Connector);
-
-            if (connectorConfiguration == null)
-            {
-                throw new ConfigurationException($"The connector {job.Connector} cannot be found");
-            }
+            var connectorConfiguration = configuration.Connectors.SingleOrDefault(x => x.Id == job.Connector) ??
+                                         throw new ConfigurationException($"The connector {job.Connector} cannot be found");
 
             var connector = this.GetConnector(connectorConfiguration);
             var messages = connector.Execute(connectorConfiguration.Config);
 
             foreach (var action in job.Actions)
             {
-                var ruleConfiguration = configuration.Rules.SingleOrDefault(x => x.Id == action.Rule);
-                if (ruleConfiguration == null)
-                {
-                    throw new ConfigurationException($"The connector {action.Rule} cannot be found");
-                }
+                var ruleConfiguration = configuration.Rules.SingleOrDefault(x => x.Id == action.Rule) ??
+                                        throw new ConfigurationException($"The connector {action.Rule} cannot be found");
 
-                var processorConfiguration = configuration.Processors.SingleOrDefault(x => x.Id == action.Processor);
-                if (processorConfiguration == null)
-                {
-                    throw new ConfigurationException($"The processor {action.Processor} cannot be found");
-                }
+                var processorConfiguration = configuration.Processors.SingleOrDefault(x => x.Id == action.Processor) ??
+                                             throw new ConfigurationException($"The processor {action.Processor} cannot be found");
 
                 var rule = this.GetRule(ruleConfiguration);
                 var processor = this.GetProcessor(processorConfiguration);
@@ -76,42 +66,22 @@ namespace Acme.Automation.Core
         {
             processorConfiguration.ThrowIfNull(nameof(processorConfiguration));
 
-            var processorType = Type.GetType(processorConfiguration.Type);
+            var processorType = Type.GetType(processorConfiguration.Type) ??
+                                throw new ConfigurationException($"The processor type {processorConfiguration.Type} cannot be found");
 
-            if (processorType == null)
-            {
-                throw new ConfigurationException($"The processor type {processorConfiguration.Type} cannot be found");
-            }
-
-            var processor = Activator.CreateInstance(processorType) as IProcessor;
-
-            if (processor == null)
-            {
-                throw new ConfigurationException($"The processor type {processorConfiguration.Type} does not implement IConnector");
-            }
-
-            return processor;
+            return Activator.CreateInstance(processorType) as IProcessor ??
+                   throw new ConfigurationException($"The processor type {processorConfiguration.Type} does not implement IConnector");
         }
 
         private IRule GetRule(Rule ruleConfiguration)
         {
             ruleConfiguration.ThrowIfNull(nameof(ruleConfiguration));
 
-            var ruleType = Type.GetType(ruleConfiguration.Type);
+            var ruleType = Type.GetType(ruleConfiguration.Type) ??
+                           throw new ConfigurationException($"The rule type {ruleConfiguration.Type} cannot be found");
 
-            if (ruleType == null)
-            {
-                throw new ConfigurationException($"The rule type {ruleConfiguration.Type} cannot be found");
-            }
-
-            var rule = Activator.CreateInstance(ruleType) as IRule;
-
-            if (rule == null)
-            {
-                throw new ConfigurationException($"The rule type {ruleConfiguration.Type} does not implement IConnector");
-            }
-
-            return rule;
+            return Activator.CreateInstance(ruleType) as IRule ??
+                   throw new ConfigurationException($"The rule type {ruleConfiguration.Type} does not implement IConnector");
         }
 
         /// <summary>
@@ -123,21 +93,11 @@ namespace Acme.Automation.Core
         {
             connectorConfiguration.ThrowIfNull(nameof(connectorConfiguration));
 
-            var connectorType = Type.GetType(connectorConfiguration.Type);
+            var connectorType = Type.GetType(connectorConfiguration.Type) ?? 
+                                throw new ConfigurationException($"The connector type {connectorConfiguration.Type} cannot be found");
 
-            if (connectorType == null)
-            {
-                throw new ConfigurationException($"The connector type {connectorConfiguration.Type} cannot be found");
-            }
-
-            var connector = Activator.CreateInstance(connectorType) as IConnector;
-
-            if (connector == null)
-            {
-                throw new ConfigurationException($"The connector type {connectorConfiguration.Type} does not implement IConnector");
-            }
-
-            return connector;
+            return Activator.CreateInstance(connectorType) as IConnector ??
+                   throw new ConfigurationException($"The connector type {connectorConfiguration.Type} does not implement IConnector");
         }
     }
 }
