@@ -1,9 +1,11 @@
-//  <copyright file="Pop3ConnectorConfig.cs" company="Acme">
-//  Copyright (c) Acme. All rights reserved.
-//  </copyright>
+// <copyright file="Pop3ConnectorConfig.cs" company="Acme">
+// Copyright (c) Acme. All rights reserved.
+// </copyright>
 
 namespace Acme.Automation.Connectors
 {
+    using System;
+    using System.Linq;
     using System.Runtime.Serialization;
 
     /// <summary>
@@ -41,7 +43,7 @@ namespace Acme.Automation.Connectors
         public string UserName { get; set; }
 
         /// <summary>
-        /// Gets or sets the UseSsl.
+        /// Gets or sets a value indicating whether the connection must use Ssl.
         /// </summary>
         /// <value>The UseSsl.</value>
         [DataMember(Name = "useSsl")]

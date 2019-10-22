@@ -1,4 +1,4 @@
-// <copyright file="AlwaysMatch.cs" company="Acme">
+// <copyright file="CurveReceipt.cs" company="Acme">
 // Copyright (c) Acme. All rights reserved.
 // </copyright>
 
@@ -12,14 +12,16 @@ namespace Acme.Automation.Rules
     using Newtonsoft.Json.Linq;
 
     /// <summary>
-    /// This rule ... always match ! Yeah, really !.
+    /// Rule to check if message is from curve.
     /// </summary>
-    public class AlwaysMatch : IRule
+    public class CurveReceipt : IRule
     {
         /// <inheritdoc />
         public bool IsMatch(JToken config, Message message)
         {
-            return true;
+            var title = message.Items["subject"].ToString();
+
+            return title.Contains("Curve Receipt:");
         }
     }
 }

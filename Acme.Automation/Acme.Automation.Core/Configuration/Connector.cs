@@ -1,6 +1,6 @@
-//  <copyright file="Connector.cs" company="Acme">
-//  Copyright (c) Acme. All rights reserved.
-//  </copyright>
+// <copyright file="Connector.cs" company="Acme">
+// Copyright (c) Acme. All rights reserved.
+// </copyright>
 
 namespace Acme.Automation.Core.Configuration
 {
