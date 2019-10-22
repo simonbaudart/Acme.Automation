@@ -16,7 +16,7 @@ namespace Acme.Automation.Processors
     public class DumpData : IProcessor
     {
         /// <summary>
-        /// Define the logger
+        /// Define the logger.
         /// </summary>
         private static readonly ILog Log = LogManager.GetLogger(typeof(DumpData));
 

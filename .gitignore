@@ -348,3 +348,4 @@ ASALocalRun/
 /Prism.MentalUp.Web/App_Data/Models
 /Funcky.Security.CameraCloudCenter/wwwroot/dist/app.bundle.js
 *.js
+/Acme.Automation/Acme.Automation.SimpleRunner/configuration.json
