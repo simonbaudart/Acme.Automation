@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp2.2</TargetFramework>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <DocumentationFile>bin\Debug\Acme.Automation.SimpleRunner.xml</DocumentationFile>
+      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <DocumentationFile>bin\Release\Acme.Automation.SimpleRunner.xml</DocumentationFile>
+      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Acme.Automation.Connectors\Acme.Automation.Connectors.csproj" />
+      <ProjectReference Include="..\Acme.Automation.Core\Acme.Automation.Core.csproj" />
+      <ProjectReference Include="..\Acme.Automation.Processors\Acme.Automation.Processors.csproj" />
+      <ProjectReference Include="..\Acme.Automation.Rules\Acme.Automation.Rules.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Acme.Core.Extensions" Version="1.1.1" />
+      <PackageReference Include="log4net" Version="2.0.8" />
+      <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+      <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="log4net.config" />
+      <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
+      <Content Include="log4net.config">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="configuration.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
+</Project>

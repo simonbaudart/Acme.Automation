@@ -1,0 +1,45 @@
+{
+  "jobs": [
+    {
+      "id": "curve-to-wallet",
+      "friendlyName": "Import Curve into Wallet",
+      "runAtStartup": true,
+      "cronSchedule": null,
+      "connector": "pop-automation",
+      "actions" : [
+        {
+          "rule" : "always-match",
+          "processor" :"dump-data"
+        }
+      ]
+    }
+  ],
+  "connectors" : [
+    {
+      "id": "pop-automation",
+      "friendlyName": "Get emails from xxxxxxxx@yyyyyyyyyyyyyyy.com",
+      "type" : "Acme.Automation.Connectors.Pop3Connector, Acme.Automation.Connectors",
+      "config" : {
+        "host": "smtp.yyyyyyyyyyyyyyy.com",
+        "port": 995,
+        "useSsl": true,
+        "username": "xxxxxxxx@yyyyyyyyyyyyyyy.com",
+        "password": "************************"
+      }
+    }
+  ],
+  "rules" : [
+    {
+      "id": "always-match",
+      "friendlyName": "Always return true",
+      "type": "Acme.Automation.Rules.AlwaysMatch, Acme.Automation.Rules"
+    }
+  ],
+  "processors" : [
+    {
+      "id": "dump-data",
+      "friendlyName": "Dump data to the console",
+      "type": "Acme.Automation.Processors.DumpData, Acme.Automation.Processors"
+    }
+  ]
+}

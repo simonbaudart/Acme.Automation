@@ -5,12 +5,12 @@
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-      <DocumentationFile>bin\Debug\Acme.Automation.Core.xml</DocumentationFile>
+      <DocumentationFile>bin\Debug\Acme.Automation.Connectors.xml</DocumentationFile>
       <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-      <DocumentationFile>bin\Release\Acme.Automation.Core.xml</DocumentationFile>
+      <DocumentationFile>bin\Release\Acme.Automation.Connectors.xml</DocumentationFile>
       <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
@@ -19,9 +19,13 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Acme.Automation.Core\Acme.Automation.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
       <PackageReference Include="Acme.Core.Extensions" Version="1.1.1" />
       <PackageReference Include="log4net" Version="2.0.8" />
-      <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+      <PackageReference Include="MailKit" Version="2.3.2" />
       <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
