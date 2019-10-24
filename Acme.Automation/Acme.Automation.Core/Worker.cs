@@ -5,6 +5,7 @@
 namespace Acme.Automation.Core
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     using Acme.Automation.Core.Configuration;
@@ -37,6 +38,19 @@ namespace Acme.Automation.Core
             var connector = this.GetConnector(connectorConfiguration);
             var messages = connector.Execute(connectorConfiguration.Config);
 
+            Log.Debug("Start executing actions");
+            this.ExecuteActions(messages, configuration, job);
+
+            Log.Debug("Start executing grouped actions");
+            this.ExecuteGroupedActions(messages, configuration, job);
+
+            Log.Info($"{messages.Count} retrieved from the connector");
+
+            Log.Info($"Done with the job : {job.FriendlyName}");
+        }
+
+        private void ExecuteActions(IReadOnlyCollection<Message> messages, AutomationConfiguration configuration, Job job)
+        {
             foreach (var action in job.Actions)
             {
                 var ruleConfiguration = configuration.Rules.SingleOrDefault(x => x.Id == action.Rule) ??
@@ -53,17 +67,41 @@ namespace Acme.Automation.Core
                     var ruleMatch = rule.IsMatch(ruleConfiguration.Config, message);
                     Log.Debug($"The rule {ruleConfiguration.FriendlyName} returns : {ruleMatch}");
 
-                    if (ruleMatch)
+                    if (!ruleMatch)
                     {
-                        Log.Info($"Executing the processor : {processorConfiguration.FriendlyName}");
-                        processor.Execute(processorConfiguration.Config, message);
+                        continue;
                     }
+
+                    Log.Info($"Executing the processor on one message : {processorConfiguration.FriendlyName}");
+                    processor.Execute(processorConfiguration.Config, message);
                 }
             }
+        }
 
-            Log.Info($"{messages.Count} retrieved from the connector");
+        private void ExecuteGroupedActions(IReadOnlyCollection<Message> messages, AutomationConfiguration configuration, Job job)
+        {
+            foreach (var action in job.GroupedActions)
+            {
+                var ruleConfiguration = configuration.Rules.SingleOrDefault(x => x.Id == action.Rule) ??
+                                        throw new ConfigurationException($"The connector {action.Rule} cannot be found");
 
-            Log.Info($"Done with the job : {job.FriendlyName}");
+                var processorConfiguration = configuration.Processors.SingleOrDefault(x => x.Id == action.Processor) ??
+                                             throw new ConfigurationException($"The processor {action.Processor} cannot be found");
+
+                var rule = this.GetRule(ruleConfiguration);
+                var processor = this.GetGroupedProcessor(processorConfiguration);
+
+                var matchingMessages = messages.Where(x => rule.IsMatch(ruleConfiguration.Config, x)).ToList();
+                Log.Debug($"The rule {ruleConfiguration.FriendlyName} matches on {matchingMessages.Count} messages");
+
+                if (matchingMessages.Count <= 0)
+                {
+                    continue;
+                }
+
+                Log.Info($"Executing the processor on {matchingMessages.Count} messages : {processorConfiguration.FriendlyName}");
+                processor.Execute(processorConfiguration.Config, matchingMessages);
+            }
         }
 
         /// <summary>
@@ -82,6 +120,17 @@ namespace Acme.Automation.Core
                    throw new ConfigurationException($"The connector type {connectorConfiguration.Type} does not implement IConnector");
         }
 
+        private IGroupedProcessor GetGroupedProcessor(Processor processorConfiguration)
+        {
+            processorConfiguration.ThrowIfNull(nameof(processorConfiguration));
+
+            var processorType = Type.GetType(processorConfiguration.Type) ??
+                                throw new ConfigurationException($"The processor type {processorConfiguration.Type} cannot be found");
+
+            return Activator.CreateInstance(processorType) as IGroupedProcessor ??
+                   throw new ConfigurationException($"The processor type {processorConfiguration.Type} does not implement IGroupedProcessor");
+        }
+
         private IProcessor GetProcessor(Processor processorConfiguration)
         {
             processorConfiguration.ThrowIfNull(nameof(processorConfiguration));
@@ -90,7 +139,7 @@ namespace Acme.Automation.Core
                                 throw new ConfigurationException($"The processor type {processorConfiguration.Type} cannot be found");
 
             return Activator.CreateInstance(processorType) as IProcessor ??
-                   throw new ConfigurationException($"The processor type {processorConfiguration.Type} does not implement IConnector");
+                   throw new ConfigurationException($"The processor type {processorConfiguration.Type} does not implement IProcessor");
         }
 
         private IRule GetRule(Rule ruleConfiguration)
@@ -101,7 +150,7 @@ namespace Acme.Automation.Core
                            throw new ConfigurationException($"The rule type {ruleConfiguration.Type} cannot be found");
 
             return Activator.CreateInstance(ruleType) as IRule ??
-                   throw new ConfigurationException($"The rule type {ruleConfiguration.Type} does not implement IConnector");
+                   throw new ConfigurationException($"The rule type {ruleConfiguration.Type} does not implement IRule");
         }
     }
 }

@@ -1,0 +1,84 @@
+{
+  "jobs": [
+    {
+      "id": "curve-to-wallet",
+      "friendlyName": "Import Curve into Wallet",
+      "runAtStartup": true,
+      "cronSchedule": null,
+      "connector": "id-of-the-pop-connector",
+      "actions": [
+        {
+          "rule": "curve-receipt",
+          "processor": "curve-receipt"
+        }
+      ],
+      "groupedActions": [
+        {
+          "rule": "is-receipt",
+          "processor": "wallet-csv"
+        }
+      ]
+    }
+  ],
+  "connectors": [
+    {
+      "id": "id-of-the-pop-connector",
+      "friendlyName": "Get emails from source@mail.com",
+      "type": "Acme.Automation.Connectors.Pop3Connector, Acme.Automation.Connectors",
+      "config": {
+        "host": "pop.mail.com",
+        "port": 995,
+        "useSsl": true,
+        "username": "source@mail.com",
+        "password": "password"
+      }
+    }
+  ],
+  "rules": [
+    {
+      "id": "always-match",
+      "friendlyName": "Always return true",
+      "type": "Acme.Automation.Rules.AlwaysMatch, Acme.Automation.Rules"
+    },
+    {
+      "id": "curve-receipt",
+      "friendlyName": "Curve Receipt",
+      "type": "Acme.Automation.Rules.CurveReceipt, Acme.Automation.Rules"
+    },
+    {
+      "id": "is-receipt",
+      "friendlyName": "Is a bank receipt",
+      "type": "Acme.Automation.Rules.HasProperties, Acme.Automation.Rules",
+      "config": [
+        "transaction"
+      ]
+    }
+  ],
+  "processors": [
+    {
+      "id": "dump-data",
+      "friendlyName": "Dump data to the console",
+      "type": "Acme.Automation.Processors.DumpData, Acme.Automation.Processors"
+    },
+    {
+      "id": "curve-receipt",
+      "friendlyName": "Curve Receipt",
+      "type": "Acme.Automation.Processors.CurveReceipt, Acme.Automation.Processors"
+    },
+    {
+      "id": "wallet-csv",
+      "friendlyName": "Wallet Csv Import",
+      "type": "Acme.Automation.Processors.WalletCsvImport, Acme.Automation.Processors",
+      "config": {
+        "sender" : "sender@mail.com",
+        "recipient": "xxxxxxxxxxxxxxx@imports.budgetbakers.com",
+        "smtp": {
+          "host": "smtp.mail.com",
+          "port": 587,
+          "username": "username",
+          "password": "password"
+        }
+      }
+    }
+  ]
+}

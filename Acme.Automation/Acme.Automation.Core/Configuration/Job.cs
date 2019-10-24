@@ -4,7 +4,9 @@
 
 namespace Acme.Automation.Core.Configuration
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Runtime.Serialization;
 
     /// <summary>
@@ -33,6 +35,12 @@ namespace Acme.Automation.Core.Configuration
         /// <value>The CronSchedule.</value>
         [DataMember(Name = "cronSchedule")]
         public string CronSchedule { get; set; }
+
+        /// <summary>
+        /// Gets the actions that must be ran on all messages at once.
+        /// </summary>
+        [DataMember(Name = "groupedActions")]
+        public List<Action> GroupedActions { get; } = new List<Action>();
 
         /// <summary>
         /// Gets or sets a value indicating whether the job runs at startup.

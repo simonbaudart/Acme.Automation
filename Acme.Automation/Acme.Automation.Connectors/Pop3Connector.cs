@@ -56,10 +56,11 @@ namespace Acme.Automation.Connectors
                         var froms = mail.From.Mailboxes.Select(x => x.Address);
                         var tos = mail.To.Mailboxes.Select(x => x.Address);
                         var subject = mail.Subject;
-                        var body = mail.HtmlBody ?? mail.TextBody;
+                        var htmlBody = mail.HtmlBody;
+                        var textBody = mail.TextBody;
                         var date = mail.Date;
 
-                        messages.AddRange(this.ProcessMails(froms, tos, date, subject, body));
+                        messages.AddRange(this.ProcessMails(froms, tos, date, subject, htmlBody, textBody));
                     }
 
                     Log.Debug($"Deleting message from 0 to {numberOfMessageToProcess}");
@@ -77,7 +78,7 @@ namespace Acme.Automation.Connectors
             return messages;
         }
 
-        private IEnumerable<Message> ProcessMails(IEnumerable<string> senders, IEnumerable<string> recipients, DateTimeOffset date, string subject, string body)
+        private IEnumerable<Message> ProcessMails(IEnumerable<string> senders, IEnumerable<string> recipients, DateTimeOffset date, string subject, string htmlBody, string textBody)
         {
             var messages = new List<Message>();
             var recipientsList = recipients.ToList();
@@ -91,7 +92,8 @@ namespace Acme.Automation.Connectors
                     message.Items.Add("recipient", recipient);
                     message.Items.Add("date", date);
                     message.Items.Add("subject", subject);
-                    message.Items.Add("body", body);
+                    message.Items.Add("htmlBody", htmlBody);
+                    message.Items.Add("textBody", textBody);
                     messages.Add(message);
                 }
             }
