@@ -4,6 +4,8 @@
 
 namespace Acme.Automation.Processors
 {
+    using System;
+    using System.Linq;
     using System.Runtime.Serialization;
 
     /// <summary>
@@ -13,11 +15,18 @@ namespace Acme.Automation.Processors
     public class WalletCsvImportConfiguration
     {
         /// <summary>
-        /// Gets or sets the EmailAddress.
+        /// Gets or sets the Recipient.
         /// </summary>
-        /// <value>The EmailAddress.</value>
-        [DataMember(Name = "emailAddress")]
-        public string EmailAddress { get; set; }
+        /// <value>The Recipient.</value>
+        [DataMember(Name = "recipient")]
+        public string Recipient { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Sender.
+        /// </summary>
+        /// <value>The Sender.</value>
+        [DataMember(Name = "sender")]
+        public string Sender { get; set; }
 
         /// <summary>
         /// Gets or sets the smtp.
