@@ -4,7 +4,7 @@
 
 Goal of this project is to create a Geek version of an IFTT'like.
 All the configuration of the project is stored into a json or anything else and the core provide an engine to run all the rules.
-The rules will be updated will Pull Request.
+The rules will be updated with Pull Request.
 
 ## Disclaimer
 
@@ -202,7 +202,7 @@ Read the transaction property in the message and create a csv. Send the csv as a
 
 See in the Samples directory.
 
-* curve-receipt-to-wallet.json : Import the Curve Email receipt into Wallet.
+* [curve-receipt-to-wallet.json](https://github.com/simonbaudart/Acme.Automation/blob/master/Samples/curve-receipt-to-wallet.json) : Import the Curve Email receipt into Wallet.
 
 # Buy Me A Beer
 If this project help you, you can give me a beer :) 
