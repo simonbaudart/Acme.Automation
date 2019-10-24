@@ -14,6 +14,9 @@ namespace Acme.Automation.Processors
     using System.Text;
 
     using Acme.Automation.Core;
+    using Acme.Automation.Core.Models;
+
+    using log4net;
 
     using Newtonsoft.Json.Linq;
 
@@ -22,6 +25,11 @@ namespace Acme.Automation.Processors
     /// </summary>
     public class WalletCsvImport : IProcessor, IGroupedProcessor
     {
+        /// <summary>
+        /// Define the logger.
+        /// </summary>
+        private static readonly ILog Log = LogManager.GetLogger(typeof(WalletCsvImport));
+
         /// <summary>
         /// The format culture.
         /// </summary>
@@ -40,6 +48,12 @@ namespace Acme.Automation.Processors
         /// <inheritdoc />
         public void Execute(JToken config, List<Message> messages)
         {
+            if (messages.Count == 0)
+            {
+                Log.Info("No message in list, skipping CSV");
+                return;
+            }
+
             var configWalletCsvImport = config.ToObject<WalletCsvImportConfiguration>();
 
             var csv = this.BuildHeader();
@@ -60,16 +74,14 @@ namespace Acme.Automation.Processors
 
         private void AppendRow(StringBuilder csv, Message message)
         {
-            var utcDate = message.Get<DateTime>("utcDate");
-            var note = message.Get<string>("note");
-            var amount = message.Get<string>("amount");
+            var transaction = message.Get<TransactionInformation>(TransactionInformation.MessagePropertyName);
 
-            csv.AppendLine($"\"{utcDate:dd/MM/yyyy HH:mm}\";\"{note.Replace("\"", "\"\"")}\";-{amount};\"\"".ToString(FormatCulture));
+            csv.AppendLine($"\"{transaction.Reference}\";\"{transaction.UtcDate:dd/MM/yyyy HH:mm}\";\"{transaction.Note.Replace("\"", "\"\"")}\";{transaction.Amount:F2};\"{transaction.Currency}\";\"{transaction.Creditor}\";\"{transaction.Category}\"".ToString(FormatCulture));
         }
 
         private StringBuilder BuildHeader()
         {
-            return new StringBuilder("\"Date\";\"Note\";\"Amount\";\"Category\"\r\n");
+            return new StringBuilder("\"Reference\";\"Date\";\"Note\";\"Amount\";\"Currency\";\"Payee\";\"Category\"\r\n");
         }
 
         private void SendRecords(WalletCsvImportConfiguration configWalletCsvImport, StringBuilder csv)

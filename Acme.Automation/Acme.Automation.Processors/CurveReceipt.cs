@@ -6,9 +6,13 @@ namespace Acme.Automation.Processors
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
     using System.Text.RegularExpressions;
 
     using Acme.Automation.Core;
+    using Acme.Automation.Core.Models;
+    using Acme.Core.Extensions;
 
     using log4net;
 
@@ -19,6 +23,13 @@ namespace Acme.Automation.Processors
     /// </summary>
     public class CurveReceipt : IProcessor
     {
+        private static readonly Regex CurveParsing = new Regex(@"You made a purchase at:\s*(?<Note>.+?)\s+€(?<Amount>\d+\.\d+)\s+(?<Day>\d+)\s+(?<Month>\w+)\s+(?<Year>\d+)\s+(?<Hour>\d+):(?<Minute>\d+):(?<Second>\d+)\s+(?:.\d+\.\d+\s+)?(.+)On this card:\s+(?<Name>.+?)\n\s*(?<CardName>.+)");
+
+        /// <summary>
+        /// Define the logger.
+        /// </summary>
+        private static readonly ILog Log = LogManager.GetLogger(typeof(Worker));
+
         /// <summary>
         /// The months.
         /// </summary>
@@ -38,13 +49,6 @@ namespace Acme.Automation.Processors
             { "December", 12 },
         };
 
-        /// <summary>
-        /// Define the logger.
-        /// </summary>
-        private static readonly ILog Log = LogManager.GetLogger(typeof(Worker));
-
-        private static readonly Regex CurveParsing = new Regex(@"You made a purchase at:\s*(?<Note>.+?)\s+€(?<Amount>\d+\.\d+)\s+(?<Day>\d+)\s+(?<Month>\w+)\s+(?<Year>\d+)\s+(?<Hour>\d+):(?<Minute>\d+):(?<Second>\d+)\s+(?:.\d+\.\d+\s+)?(.+)On this card:\s+(?<Name>.+?)\n\s*(?<CardName>.+)");
-
         /// <inheritdoc />
         public void Execute(JToken config, Message message)
         {
@@ -61,12 +65,16 @@ namespace Acme.Automation.Processors
                 var amount = match.Groups["Amount"].Value;
 
                 Log.Info("Adding the transaction informations to the message");
-                message.Items.Add("utcDate", utcDate);
-                message.Items.Add("cardName", cardName);
-                message.Items.Add("note", note);
-                message.Items.Add("amount", amount);
-                message.Items.Add("debit", true);
-                message.Items.Add("credit", false);
+
+                var transactionInformation = new TransactionInformation();
+                transactionInformation.UtcDate = utcDate;
+                transactionInformation.CardName = cardName;
+                transactionInformation.Note = transactionInformation.Creditor = note;
+                transactionInformation.Amount = -Convert.ToDecimal(amount, CultureInfo.InvariantCulture);
+                transactionInformation.Currency = "EUR";
+                transactionInformation.Category = string.Empty;
+                transactionInformation.Reference = $"{utcDate}-{cardName}-{note}-{amount}".SHA512();
+                message.Add(TransactionInformation.MessagePropertyName, transactionInformation);
             }
             else
             {

@@ -24,10 +24,21 @@ namespace Acme.Automation.Core
         public Dictionary<string, JToken> Items { get; } = new Dictionary<string, JToken>();
 
         /// <summary>
+        /// Add an item to the dictionnary.
+        /// </summary>
+        /// <param name="key">The key of item to be add.</param>
+        /// <param name="item">The item to be add.</param>
+        /// <typeparam name="T">Type of the item.</typeparam>
+        public void Add<T>(string key, T item)
+        {
+            this.Items[key] = JToken.FromObject(item);
+        }
+
+        /// <summary>
         /// Gets an items converted into a specific type.
         /// </summary>
         /// <param name="key">The key of item to be found.</param>
-        /// <typeparam name="T">The type that must bu returned.</typeparam>
+        /// <typeparam name="T">The type that must be returned.</typeparam>
         /// <returns>The value of the item, converted to type T.</returns>
         public T Get<T>(string key)
         {
