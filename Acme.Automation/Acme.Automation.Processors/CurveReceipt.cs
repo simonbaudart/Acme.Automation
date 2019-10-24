@@ -43,7 +43,7 @@ namespace Acme.Automation.Processors
         /// </summary>
         private static readonly ILog Log = LogManager.GetLogger(typeof(Worker));
 
-        private static readonly Regex CurveParsing = new Regex(@"You made a purchase at:\s*(?<Note>.+?)\s+€(?<Amount>\d+\.\d+)\s+(?<Day>\d+)\s+(?<Month>\w+)\s+(?<Year>\d+)\s+(?<Hour>\d+):(?<Minute>\d+):(?<Second>\d+)\s+(?:.\d+\.\d+\s+)?On this card:\s+(?<Name>.+?)\n\s*(?<CardName>.+)");
+        private static readonly Regex CurveParsing = new Regex(@"You made a purchase at:\s*(?<Note>.+?)\s+€(?<Amount>\d+\.\d+)\s+(?<Day>\d+)\s+(?<Month>\w+)\s+(?<Year>\d+)\s+(?<Hour>\d+):(?<Minute>\d+):(?<Second>\d+)\s+(?:.\d+\.\d+\s+)?(.+)On this card:\s+(?<Name>.+?)\n\s*(?<CardName>.+)");
 
         /// <inheritdoc />
         public void Execute(JToken config, Message message)
