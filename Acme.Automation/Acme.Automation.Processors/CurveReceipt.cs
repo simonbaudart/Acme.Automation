@@ -69,7 +69,7 @@ namespace Acme.Automation.Processors
                 var transactionInformation = new TransactionInformation();
                 transactionInformation.UtcDate = utcDate;
                 transactionInformation.CardName = cardName;
-                transactionInformation.Note = transactionInformation.Creditor = note;
+                transactionInformation.Creditor = note;
                 transactionInformation.Amount = -Convert.ToDecimal(amount, CultureInfo.InvariantCulture);
                 transactionInformation.Currency = "EUR";
                 transactionInformation.Category = string.Empty;
