@@ -61,7 +61,7 @@ namespace Acme.Automation.Processors
                 var timeZone = TimeZoneInfo.FindSystemTimeZoneById("Romance Standard Time");
                 var utcDate = new DateTimeOffset(parsedDate, timeZone.GetUtcOffset(parsedDate)).UtcDateTime;
                 var cardName = match.Groups["CardName"].Value.Trim();
-                var note = match.Groups["Note"].Value;
+                var creditor = match.Groups["Note"].Value;
                 var amount = match.Groups["Amount"].Value;
 
                 Log.Info("Adding the transaction informations to the message");
@@ -69,11 +69,12 @@ namespace Acme.Automation.Processors
                 var transactionInformation = new TransactionInformation();
                 transactionInformation.UtcDate = utcDate;
                 transactionInformation.CardName = cardName;
-                transactionInformation.Creditor = note;
+                transactionInformation.Creditor = creditor;
+                transactionInformation.Note = string.Empty;
                 transactionInformation.Amount = -Convert.ToDecimal(amount, CultureInfo.InvariantCulture);
                 transactionInformation.Currency = "EUR";
                 transactionInformation.Category = string.Empty;
-                transactionInformation.Reference = $"{utcDate}-{cardName}-{note}-{amount}".SHA512();
+                transactionInformation.Reference = $"{utcDate}-{cardName}-{creditor}-{amount}".SHA512();
                 message.Add(TransactionInformation.MessagePropertyName, transactionInformation);
             }
             else
