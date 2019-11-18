@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="log4net" Version="2.0.8" />
+      <PackageReference Include="MimeKit" Version="2.4.1" />
+      <PackageReference Include="SmtpServer" Version="6.4.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Acme.Automation.Core\Acme.Automation.Core.csproj" />
+    </ItemGroup>
+
+</Project>
