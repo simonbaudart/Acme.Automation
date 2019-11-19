@@ -13,6 +13,8 @@ namespace Acme.Automation.Servers.Smtp
 
     using log4net;
 
+    using MimeKit;
+
     using SmtpServer;
     using SmtpServer.Mail;
     using SmtpServer.Protocol;
@@ -37,16 +39,24 @@ namespace Acme.Automation.Servers.Smtp
             {
                 foreach (var recipient in message.To)
                 {
+                    var senderEmail = sender as MailboxAddress;
+                    var recipientEmail = recipient as MailboxAddress;
+
+                    if (senderEmail == null || recipientEmail == null)
+                    {
+                        continue;
+                    }
+
                     var acmeMessage = new Message();
-                    acmeMessage.Items.Add("sender", sender.ToString());
-                    acmeMessage.Items.Add("recipient", recipient.ToString());
+                    acmeMessage.Items.Add("sender", senderEmail.Address);
+                    acmeMessage.Items.Add("recipient", recipientEmail.Address);
                     acmeMessage.Items.Add("date", message.Date);
                     acmeMessage.Items.Add("subject", message.Subject);
                     acmeMessage.Items.Add("htmlBody", message.HtmlBody);
                     acmeMessage.Items.Add("textBody", message.TextBody);
                     messages.Add(acmeMessage);
 
-                    Log.Info($"INCOMING FROM {sender} TO {recipient} : {message.Subject}");
+                    Log.Info($"INCOMING FROM {senderEmail.Address} TO {recipientEmail.Address} : {message.Subject}");
                 }
             }
 
