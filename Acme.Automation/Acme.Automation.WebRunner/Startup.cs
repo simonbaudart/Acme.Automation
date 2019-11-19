@@ -79,7 +79,8 @@ namespace Acme.Automation.WebRunner
                     UseRecommendedIsolationLevel = true,
                     UsePageLocksOnDequeue = true,
                     DisableGlobalLocks = true
-                }));
+                })
+                .UseLog4NetLogProvider());
 
             // Add the processing server as IHostedService
             services.AddHangfireServer();
