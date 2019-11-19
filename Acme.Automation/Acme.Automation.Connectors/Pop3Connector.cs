@@ -34,7 +34,7 @@ namespace Acme.Automation.Connectors
 
             try
             {
-                using (var popClient = new Pop3Client(new ProtocolLogger("pop3.txt")))
+                using (var popClient = new Pop3Client())
                 {
                     popClient.Connect(configuration.Host, configuration.Port, configuration.UseSsl);
                     popClient.Authenticate(configuration.UserName, configuration.Password);

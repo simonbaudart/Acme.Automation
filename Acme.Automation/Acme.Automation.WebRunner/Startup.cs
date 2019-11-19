@@ -7,6 +7,8 @@ namespace Acme.Automation.WebRunner
     using System;
     using System.IO;
     using System.Linq;
+    using System.Reflection;
+    using System.Xml;
 
     using Acme.Automation.Core.Configuration;
 
@@ -14,6 +16,8 @@ namespace Acme.Automation.WebRunner
     using Hangfire.SqlServer;
 
     using log4net;
+    using log4net.Config;
+    using log4net.Repository.Hierarchy;
 
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -56,6 +60,12 @@ namespace Acme.Automation.WebRunner
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            // start log4net
+            var log4netConfig = new XmlDocument();
+            log4netConfig.Load(File.OpenRead("log4net.config"));
+            var repo = LogManager.CreateRepository(Assembly.GetEntryAssembly(), typeof(Hierarchy));
+            XmlConfigurator.Configure(repo, log4netConfig["log4net"]);
+
             // Add Hangfire services.
             services.AddHangfire(configuration => configuration
                 .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
