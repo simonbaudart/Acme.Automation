@@ -76,7 +76,7 @@ namespace Acme.Automation.Processors
         {
             var transaction = message.Get<TransactionInformation>(TransactionInformation.MessagePropertyName);
 
-            csv.AppendLine($"\"{transaction.Reference}\";\"{transaction.UtcDate:dd/MM/yyyy HH:mm}\";\"{transaction.Note.Replace("\"", "\"\"")}\";{transaction.Amount:F2};\"{transaction.Currency}\";\"{transaction.Creditor}\";\"{transaction.Category}\"".ToString(FormatCulture));
+            csv.AppendLine($"\"{transaction.Reference?.Replace("\"", "\"\"")}\";\"{transaction.UtcDate:dd/MM/yyyy HH:mm}\";\"{transaction.Note?.Replace("\"", "\"\"")}\";{transaction.Amount:F2};\"{transaction.Currency}\";\"{transaction.Creditor?.Replace("\"", "\"\"")}\";\"{transaction.Category?.Replace("\"", "\"\"")}\"".ToString(FormatCulture));
         }
 
         private StringBuilder BuildHeader()

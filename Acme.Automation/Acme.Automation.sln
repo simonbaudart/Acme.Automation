@@ -10,6 +10,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Acme.Automation.Rules", "Ac
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Acme.Automation.Processors", "Acme.Automation.Processors\Acme.Automation.Processors.csproj", "{9747A1C3-1EDB-4F5F-9BDE-FFD8A49B9600}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Acme.Automation.Servers.Smtp", "Acme.Automation.Servers.Smtp\Acme.Automation.Servers.Smtp.csproj", "{6DCA9A1F-95E9-4579-9D53-7402D80A01D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Acme.Automation.Servers.Smtp.ConsoleHost", "Acme.Automation.Servers.Smtp.ConsoleHost\Acme.Automation.Servers.Smtp.ConsoleHost.csproj", "{E03CE142-D02B-43FE-B0C5-AEEAD14494E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Acme.Automation.Servers.Smtp.ConsoleClient", "Acme.Automation.Servers.Smtp.ConsoleClient\Acme.Automation.Servers.Smtp.ConsoleClient.csproj", "{F319C5CD-1B3B-4334-B253-D22C2F68B274}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +42,17 @@ Global
 		{9747A1C3-1EDB-4F5F-9BDE-FFD8A49B9600}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9747A1C3-1EDB-4F5F-9BDE-FFD8A49B9600}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9747A1C3-1EDB-4F5F-9BDE-FFD8A49B9600}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DCA9A1F-95E9-4579-9D53-7402D80A01D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DCA9A1F-95E9-4579-9D53-7402D80A01D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DCA9A1F-95E9-4579-9D53-7402D80A01D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DCA9A1F-95E9-4579-9D53-7402D80A01D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E03CE142-D02B-43FE-B0C5-AEEAD14494E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E03CE142-D02B-43FE-B0C5-AEEAD14494E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E03CE142-D02B-43FE-B0C5-AEEAD14494E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E03CE142-D02B-43FE-B0C5-AEEAD14494E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F319C5CD-1B3B-4334-B253-D22C2F68B274}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F319C5CD-1B3B-4334-B253-D22C2F68B274}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F319C5CD-1B3B-4334-B253-D22C2F68B274}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F319C5CD-1B3B-4334-B253-D22C2F68B274}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
