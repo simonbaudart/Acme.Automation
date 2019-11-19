@@ -336,3 +336,4 @@ ASALocalRun/
 
 /Acme.Automation/Acme.Automation.SimpleRunner/configuration.json
 /Acme.Automation/Acme.Automation.WebRunner/configuration.json
+/Acme.Automation/**/pop3.txt

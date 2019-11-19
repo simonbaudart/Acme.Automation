@@ -9,8 +9,16 @@
         <PackageReference Include="Hangfire.AspNetCore" Version="1.7.7" />
         <PackageReference Include="Hangfire.Core" Version="1.7.7" />
         <PackageReference Include="Hangfire.SqlServer" Version="1.7.7" />
+        <PackageReference Include="log4net" Version="2.0.8" />
         <PackageReference Include="Microsoft.AspNetCore.App" />
         <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Acme.Automation.Connectors\Acme.Automation.Connectors.csproj" />
+      <ProjectReference Include="..\Acme.Automation.Core\Acme.Automation.Core.csproj" />
+      <ProjectReference Include="..\Acme.Automation.Processors\Acme.Automation.Processors.csproj" />
+      <ProjectReference Include="..\Acme.Automation.Rules\Acme.Automation.Rules.csproj" />
     </ItemGroup>
 
 </Project>
