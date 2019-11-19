@@ -16,6 +16,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Acme.Automation.Servers.Smt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Acme.Automation.Servers.Smtp.ConsoleClient", "Acme.Automation.Servers.Smtp.ConsoleClient\Acme.Automation.Servers.Smtp.ConsoleClient.csproj", "{F319C5CD-1B3B-4334-B253-D22C2F68B274}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Acme.Automation.WebRunner", "Acme.Automation.WebRunner\Acme.Automation.WebRunner.csproj", "{83ED3D3D-E332-42BB-AFEC-91C79B7CA69D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,5 +56,9 @@ Global
 		{F319C5CD-1B3B-4334-B253-D22C2F68B274}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F319C5CD-1B3B-4334-B253-D22C2F68B274}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F319C5CD-1B3B-4334-B253-D22C2F68B274}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83ED3D3D-E332-42BB-AFEC-91C79B7CA69D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83ED3D3D-E332-42BB-AFEC-91C79B7CA69D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83ED3D3D-E332-42BB-AFEC-91C79B7CA69D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83ED3D3D-E332-42BB-AFEC-91C79B7CA69D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
