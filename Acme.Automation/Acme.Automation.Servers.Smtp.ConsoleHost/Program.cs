@@ -31,7 +31,7 @@ namespace Acme.Automation.Servers.Smtp.ConsoleHost
 
             Log.Info("START CONSOLE");
 
-            var server = new SmtpServerConnector("localhost", 25, 587);
+            var server = new SmtpServerListener("localhost", 25, 587);
             await server.Start();
 
             Console.ReadKey();

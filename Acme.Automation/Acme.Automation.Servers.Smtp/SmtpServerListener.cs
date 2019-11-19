@@ -13,12 +13,12 @@ namespace Acme.Automation.Servers.Smtp
 
     using SmtpServer;
 
-    public class SmtpServerConnector
+    public class SmtpServerListener
     {
         /// <summary>
         /// Define the logger.
         /// </summary>
-        private static readonly ILog Log = LogManager.GetLogger(typeof(SmtpServerConnector));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(SmtpServerListener));
 
         private SmtpServer smtpServer;
 
@@ -34,7 +34,7 @@ namespace Acme.Automation.Servers.Smtp
         /// <value>The ServerName.</value>
         public string ServerName { get; }
 
-        public SmtpServerConnector(string serverName, params int[] ports)
+        public SmtpServerListener(string serverName, params int[] ports)
         {
             this.ServerName = serverName;
             this.Ports = ports;
