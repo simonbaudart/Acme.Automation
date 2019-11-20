@@ -34,7 +34,6 @@ namespace Acme.Automation.Servers.Smtp
 
             var message = MimeKit.MimeMessage.Load(textMessage.Content);
 
-            var messages = new List<Message>();
             foreach (var sender in message.From)
             {
                 foreach (var recipient in message.To)
@@ -54,7 +53,6 @@ namespace Acme.Automation.Servers.Smtp
                     acmeMessage.Items.Add("subject", message.Subject);
                     acmeMessage.Items.Add("htmlBody", message.HtmlBody);
                     acmeMessage.Items.Add("textBody", message.TextBody);
-                    messages.Add(acmeMessage);
 
                     Log.Info($"INCOMING FROM {senderEmail.Address} TO {recipientEmail.Address} : {message.Subject}");
                 }
