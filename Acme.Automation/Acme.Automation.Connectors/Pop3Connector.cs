@@ -26,11 +26,9 @@ namespace Acme.Automation.Connectors
         private static readonly ILog Log = LogManager.GetLogger(typeof(Pop3Connector));
 
         /// <inheritdoc />
-        public override List<Message> Execute(Pop3ConnectorConfig configuration)
+        protected override void Execute(Pop3ConnectorConfig configuration)
         {
             Log.Debug($"Fetching the emails from {configuration.Host}:{configuration.Port}");
-
-            var messages = new List<Message>();
 
             try
             {
@@ -45,7 +43,7 @@ namespace Acme.Automation.Connectors
                     {
                         Log.Debug("Disconnect from pop without processing messages");
                         popClient.Disconnect(true);
-                        return messages;
+                        return;
                     }
 
                     Log.Debug($"Number of messages to process = {numberOfMessageToProcess}");
@@ -60,7 +58,7 @@ namespace Acme.Automation.Connectors
                         var textBody = mail.TextBody;
                         var date = mail.Date;
 
-                        messages.AddRange(this.ProcessMails(froms, tos, date, subject, htmlBody, textBody));
+                        this.ProcessMails(froms, tos, date, subject, htmlBody, textBody);
                     }
 
                     Log.Debug($"Deleting message from 0 to {numberOfMessageToProcess}");
@@ -74,13 +72,10 @@ namespace Acme.Automation.Connectors
             {
                 Log.Error(e);
             }
-
-            return messages;
         }
 
-        private IEnumerable<Message> ProcessMails(IEnumerable<string> senders, IEnumerable<string> recipients, DateTimeOffset date, string subject, string htmlBody, string textBody)
+        private void ProcessMails(IEnumerable<string> senders, IEnumerable<string> recipients, DateTimeOffset date, string subject, string htmlBody, string textBody)
         {
-            var messages = new List<Message>();
             var recipientsList = recipients.ToList();
 
             foreach (var sender in senders)
@@ -94,11 +89,10 @@ namespace Acme.Automation.Connectors
                     message.Items.Add("subject", subject);
                     message.Items.Add("htmlBody", htmlBody);
                     message.Items.Add("textBody", textBody);
-                    messages.Add(message);
+
+                    this.RaiseMessageReceived(message);
                 }
             }
-
-            return messages;
         }
     }
 }

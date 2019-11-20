@@ -88,22 +88,8 @@ namespace Acme.Automation.Core.Configuration
                 // Actions are optionals
                 job.Actions?.ForEach(action =>
                 {
-                    var rule = this.Rules.SingleOrDefault(x => x.Id == action.Rule) ??
-                               throw new ConfigurationException($"The rule {action.Rule} cannot be found");
-
-                    var processor = this.Processors.SingleOrDefault(x => x.Id == action.Processor);
-
-                    if (processor == null)
-                    {
-                        throw new ConfigurationException($"The processor {action.Processor} cannot be found");
-                    }
-                });
-
-                // Grouped Actions are optionals
-                job.GroupedActions?.ForEach(action =>
-                {
-                    var rule = this.Rules.SingleOrDefault(x => x.Id == action.Rule) ??
-                               throw new ConfigurationException($"The rule {action.Rule} cannot be found");
+                    var rule = this.Rules.SingleOrDefault(x => x.Id == action.RuleId) ??
+                               throw new ConfigurationException($"The rule {action.RuleId} cannot be found");
 
                     var processor = this.Processors.SingleOrDefault(x => x.Id == action.Processor);
 

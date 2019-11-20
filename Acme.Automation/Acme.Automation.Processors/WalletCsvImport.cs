@@ -5,7 +5,6 @@
 namespace Acme.Automation.Processors
 {
     using System;
-    using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -18,12 +17,10 @@ namespace Acme.Automation.Processors
 
     using log4net;
 
-    using Newtonsoft.Json.Linq;
-
     /// <summary>
     /// Import into wallet with a csv.
     /// </summary>
-    public class WalletCsvImport : IProcessor, IGroupedProcessor
+    public class WalletCsvImport : BaseProcessor<WalletCsvImportConfiguration>
     {
         /// <summary>
         /// Define the logger.
@@ -36,29 +33,11 @@ namespace Acme.Automation.Processors
         private static readonly CultureInfo FormatCulture = BuildFormatCulture();
 
         /// <inheritdoc />
-        public void Execute(JToken config, Message message)
+        protected override void Execute(WalletCsvImportConfiguration configuration, Message message)
         {
-            var configWalletCsvImport = config.ToObject<WalletCsvImportConfiguration>();
-
             var csv = this.BuildHeader();
             this.AppendRow(csv, message);
-            this.SendRecords(configWalletCsvImport, csv);
-        }
-
-        /// <inheritdoc />
-        public void Execute(JToken config, List<Message> messages)
-        {
-            if (messages.Count == 0)
-            {
-                Log.Info("No message in list, skipping CSV");
-                return;
-            }
-
-            var configWalletCsvImport = config.ToObject<WalletCsvImportConfiguration>();
-
-            var csv = this.BuildHeader();
-            messages.ForEach(x => this.AppendRow(csv, x));
-            this.SendRecords(configWalletCsvImport, csv);
+            this.SendRecords(configuration, csv);
         }
 
         /// <summary>
@@ -84,7 +63,7 @@ namespace Acme.Automation.Processors
             return new StringBuilder("\"Reference\";\"Date\";\"Note\";\"Amount\";\"Currency\";\"Payee\";\"Category\"\r\n");
         }
 
-        private void SendRecords(WalletCsvImportConfiguration configWalletCsvImport, StringBuilder csv)
+        private void SendRecords(WalletCsvImportConfiguration configuration, StringBuilder csv)
         {
             using (var csvStream = new MemoryStream(Encoding.Default.GetBytes(csv.ToString())))
             {
@@ -92,19 +71,19 @@ namespace Acme.Automation.Processors
                 const string Subject = "Update records.";
                 var message = new MailMessage
                 {
-                    From = new MailAddress(configWalletCsvImport.Sender),
-                    To = { new MailAddress(configWalletCsvImport.Recipient) },
+                    From = new MailAddress(configuration.Sender),
+                    To = { new MailAddress(configuration.Recipient) },
                     Subject = Subject,
                     Body = Subject,
                     Attachments = { csvAttachment },
                 };
 
-                var client = new SmtpClient(configWalletCsvImport.Smtp.Host, configWalletCsvImport.Smtp.Port);
+                var client = new SmtpClient(configuration.Smtp.Host, configuration.Smtp.Port);
 
-                if (!string.IsNullOrWhiteSpace(configWalletCsvImport.Smtp.UserName))
+                if (!string.IsNullOrWhiteSpace(configuration.Smtp.UserName))
                 {
                     client.EnableSsl = true;
-                    client.Credentials = new NetworkCredential(configWalletCsvImport.Smtp.UserName, configWalletCsvImport.Smtp.Password);
+                    client.Credentials = new NetworkCredential(configuration.Smtp.UserName, configuration.Smtp.Password);
                 }
 
                 client.Send(message);

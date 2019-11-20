@@ -8,16 +8,15 @@ namespace Acme.Automation.Rules
     using System.Linq;
 
     using Acme.Automation.Core;
-
-    using Newtonsoft.Json.Linq;
+    using Acme.Automation.Core.Configuration;
 
     /// <summary>
     /// Rule to check if message is from curve.
     /// </summary>
-    public class CurveReceipt : IRule
+    public class CurveReceipt : BaseRule<EmptyConfiguration>
     {
         /// <inheritdoc />
-        public bool IsMatch(JToken config, Message message)
+        protected override bool IsMatch(EmptyConfiguration config, Message message)
         {
             var title = message.Items["subject"].ToString();
 

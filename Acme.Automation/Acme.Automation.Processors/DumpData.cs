@@ -5,19 +5,17 @@
 namespace Acme.Automation.Processors
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
 
     using Acme.Automation.Core;
+    using Acme.Automation.Core.Configuration;
 
     using log4net;
-
-    using Newtonsoft.Json.Linq;
 
     /// <summary>
     /// Processor that dumps on the log all the data from the message.
     /// </summary>
-    public class DumpData : IProcessor, IGroupedProcessor
+    public class DumpData : BaseProcessor<EmptyConfiguration>
     {
         /// <summary>
         /// Define the logger.
@@ -25,7 +23,7 @@ namespace Acme.Automation.Processors
         private static readonly ILog Log = LogManager.GetLogger(typeof(DumpData));
 
         /// <inheritdoc />
-        public void Execute(JToken config, Message message)
+        protected override void Execute(EmptyConfiguration configuration, Message message)
         {
             foreach (var item in message.Items)
             {
@@ -44,15 +42,6 @@ namespace Acme.Automation.Processors
                 }
 
                 Log.Info($"{item.Key} : {value}");
-            }
-        }
-
-        /// <inheritdoc />
-        public void Execute(JToken config, List<Message> messages)
-        {
-            foreach (var message in messages)
-            {
-                this.Execute(config, message);
             }
         }
     }

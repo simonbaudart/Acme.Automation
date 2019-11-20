@@ -7,6 +7,8 @@ namespace Acme.Automation.Core
     using System;
     using System.Linq;
 
+    using Acme.Automation.Core.Configuration;
+
     using Newtonsoft.Json.Linq;
 
     /// <summary>
@@ -15,10 +17,15 @@ namespace Acme.Automation.Core
     public interface IProcessor
     {
         /// <summary>
+        /// Gets or sets the processor configuration.
+        /// </summary>
+        Processor ProcessorConfiguration { get; set; }
+
+        /// <summary>
         /// Execute the processor with the specified config.
         /// </summary>
-        /// <param name="config">The processor specific config.</param>
+        /// <param name="job">The source job.</param>
         /// <param name="message">The message to be processed.</param>
-        void Execute(JToken config, Message message);
+        void Execute(Job job, Message message);
     }
 }

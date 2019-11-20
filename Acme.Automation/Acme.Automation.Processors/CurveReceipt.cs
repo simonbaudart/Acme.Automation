@@ -11,24 +11,18 @@ namespace Acme.Automation.Processors
     using System.Text.RegularExpressions;
 
     using Acme.Automation.Core;
+    using Acme.Automation.Core.Configuration;
     using Acme.Automation.Core.Models;
     using Acme.Core.Extensions;
 
     using log4net;
 
-    using Newtonsoft.Json.Linq;
-
     /// <summary>
     /// Process the curve receipt and generate fields into the message.
     /// </summary>
-    public class CurveReceipt : IProcessor
+    public class CurveReceipt : BaseProcessor<EmptyConfiguration>
     {
         private static readonly Regex CurveParsing = new Regex(@"You made a purchase at:\s*(?<Note>.+?)\s+€(?<Amount>\d+\.\d+)\s+(?<Day>\d+)\s+(?<Month>\w+)\s+(?<Year>\d+)\s+(?<Hour>\d+):(?<Minute>\d+):(?<Second>\d+)\s+(?:.\d+\.\d+\s+)?(.+)On this card:\s+(?<Name>.+?)\n\s*(?<CardName>.+)");
-
-        /// <summary>
-        /// Define the logger.
-        /// </summary>
-        private static readonly ILog Log = LogManager.GetLogger(typeof(Worker));
 
         /// <summary>
         /// The months.
@@ -49,8 +43,13 @@ namespace Acme.Automation.Processors
             { "December", 12 },
         };
 
+        /// <summary>
+        /// Gets the logger.
+        /// </summary>
+        private ILog Log => LogManager.GetLogger(this.GetType());
+
         /// <inheritdoc />
-        public void Execute(JToken config, Message message)
+        protected override void Execute(EmptyConfiguration configuration, Message message)
         {
             var textBody = message.Get<string>("textBody");
             var match = CurveParsing.Match(textBody);
@@ -64,7 +63,7 @@ namespace Acme.Automation.Processors
                 var creditor = match.Groups["Note"].Value;
                 var amount = match.Groups["Amount"].Value;
 
-                Log.Info("Adding the transaction informations to the message");
+                this.Log.Info("Adding the transaction informations to the message");
 
                 var transactionInformation = new TransactionInformation();
                 transactionInformation.UtcDate = utcDate;
@@ -79,7 +78,7 @@ namespace Acme.Automation.Processors
             }
             else
             {
-                Log.Warn("Cannot parse the curve receipt.");
+                this.Log.Warn("Cannot parse the curve receipt.");
             }
         }
     }
