@@ -17,16 +17,11 @@ namespace Acme.Automation.Core
     /// Base class for all processor.
     /// </summary>
     /// <typeparam name="TConfiguration">The type of the configuration.</typeparam>
-    public abstract class BaseProcessor<TConfiguration> : IProcessor
+    public abstract class BaseProcessor<TConfiguration> : BaseLoger, IProcessor
         where TConfiguration : class
     {
         /// <inheritdoc />
         public Processor ProcessorConfiguration { get; set; }
-
-        /// <summary>
-        /// Gets the logger.
-        /// </summary>
-        private ILog Log => LogManager.GetLogger(this.GetType());
 
         /// <inheritdoc />
         public void Execute(Job job, Message message)

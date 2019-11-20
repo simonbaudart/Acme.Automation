@@ -10,18 +10,11 @@ namespace Acme.Automation.Core
     using Acme.Automation.Core.Configuration;
     using Acme.Core.Extensions;
 
-    using log4net;
-
     /// <summary>
     /// Main class for the worker.
     /// </summary>
-    public class JobRunner
+    public class JobRunner : BaseLoger
     {
-        /// <summary>
-        /// Define the logger.
-        /// </summary>
-        private static readonly ILog Log = LogManager.GetLogger(typeof(JobRunner));
-
         /// <summary>
         /// Run the specified job.
         /// </summary>
@@ -29,7 +22,7 @@ namespace Acme.Automation.Core
         /// <param name="job">The job to be executed.</param>
         public void Run(AutomationConfiguration configuration, Job job)
         {
-            Log.Info($"Starting the job : {job.FriendlyName}");
+            this.Log.Info($"Starting the job : {job.FriendlyName}");
 
             var connectorConfiguration = configuration.Connectors.SingleOrDefault(x => x.Id == job.Connector) ??
                                          throw new ConfigurationException($"The connector {job.Connector} cannot be found");
@@ -50,7 +43,7 @@ namespace Acme.Automation.Core
             job.ThrowIfNull(nameof(job));
             message.ThrowIfNull(nameof(message));
 
-            Log.Info($"{job.Id} : A new message has been received");
+            this.Log.Info($"{job.Id} : A new message has been received");
 
             foreach (var actionRunner in job.Actions.Select(Factory.CreateAction))
             {

@@ -15,18 +15,11 @@ namespace Acme.Automation.Processors
     using Acme.Automation.Core;
     using Acme.Automation.Core.Models;
 
-    using log4net;
-
     /// <summary>
     /// Import into wallet with a csv.
     /// </summary>
     public class WalletCsvImport : BaseProcessor<WalletCsvImportConfiguration>
     {
-        /// <summary>
-        /// Define the logger.
-        /// </summary>
-        private static readonly ILog Log = LogManager.GetLogger(typeof(WalletCsvImport));
-
         /// <summary>
         /// The format culture.
         /// </summary>

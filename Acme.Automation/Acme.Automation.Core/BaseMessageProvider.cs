@@ -12,7 +12,7 @@ namespace Acme.Automation.Core
     /// <summary>
     /// Base classe for all message providers : connectors and activators.
     /// </summary>
-    public abstract class BaseMessageProvider
+    public abstract class BaseMessageProvider : BaseLoger
     {
         /// <summary>
         /// Handle a message received.

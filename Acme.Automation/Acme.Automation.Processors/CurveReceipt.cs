@@ -15,8 +15,6 @@ namespace Acme.Automation.Processors
     using Acme.Automation.Core.Models;
     using Acme.Core.Extensions;
 
-    using log4net;
-
     /// <summary>
     /// Process the curve receipt and generate fields into the message.
     /// </summary>
@@ -42,11 +40,6 @@ namespace Acme.Automation.Processors
             { "November", 11 },
             { "December", 12 },
         };
-
-        /// <summary>
-        /// Gets the logger.
-        /// </summary>
-        private ILog Log => LogManager.GetLogger(this.GetType());
 
         /// <inheritdoc />
         protected override void Execute(EmptyConfiguration configuration, Message message)

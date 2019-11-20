@@ -17,16 +17,11 @@ namespace Acme.Automation.Core
     /// Base class for all rules.
     /// </summary>
     /// <typeparam name="TConfiguration">The type of the configuration.</typeparam>
-    public abstract class BaseRule<TConfiguration> : IRule
+    public abstract class BaseRule<TConfiguration> : BaseLoger, IRule
         where TConfiguration : class
     {
         /// <inheritdoc />
         public Rule RuleConfiguration { get; set; }
-
-        /// <summary>
-        /// Gets the logger.
-        /// </summary>
-        private ILog Log => LogManager.GetLogger(this.GetType());
 
         /// <inheritdoc />
         public bool IsMatch(Job job, Message message)

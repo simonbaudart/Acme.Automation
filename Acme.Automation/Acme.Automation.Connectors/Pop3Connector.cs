@@ -10,25 +10,17 @@ namespace Acme.Automation.Connectors
 
     using Acme.Automation.Core;
 
-    using log4net;
-
-    using MailKit;
     using MailKit.Net.Pop3;
 
     /// <summary>
-    /// <see cref="Pop3Connector"/>.
+    /// <see cref="Pop3Connector" />.
     /// </summary>
     public class Pop3Connector : BaseConnector<Pop3ConnectorConfig>
     {
-        /// <summary>
-        /// Define the logger.
-        /// </summary>
-        private static readonly ILog Log = LogManager.GetLogger(typeof(Pop3Connector));
-
         /// <inheritdoc />
         protected override void Execute(Pop3ConnectorConfig configuration)
         {
-            Log.Debug($"Fetching the emails from {configuration.Host}:{configuration.Port}");
+            this.Log.Debug($"Fetching the emails from {configuration.Host}:{configuration.Port}");
 
             try
             {
@@ -37,16 +29,16 @@ namespace Acme.Automation.Connectors
                     popClient.Connect(configuration.Host, configuration.Port, configuration.UseSsl);
                     popClient.Authenticate(configuration.UserName, configuration.Password);
 
-                    Log.Debug($"Number of available messages = {popClient.Count}");
+                    this.Log.Debug($"Number of available messages = {popClient.Count}");
                     var numberOfMessageToProcess = Math.Min(popClient.Count, 10);
                     if (numberOfMessageToProcess == 0)
                     {
-                        Log.Debug("Disconnect from pop without processing messages");
+                        this.Log.Debug("Disconnect from pop without processing messages");
                         popClient.Disconnect(true);
                         return;
                     }
 
-                    Log.Debug($"Number of messages to process = {numberOfMessageToProcess}");
+                    this.Log.Debug($"Number of messages to process = {numberOfMessageToProcess}");
                     var mails = popClient.GetMessages(0, numberOfMessageToProcess);
 
                     foreach (var mail in mails)
@@ -61,16 +53,16 @@ namespace Acme.Automation.Connectors
                         this.ProcessMails(froms, tos, date, subject, htmlBody, textBody);
                     }
 
-                    Log.Debug($"Deleting message from 0 to {numberOfMessageToProcess}");
+                    this.Log.Debug($"Deleting message from 0 to {numberOfMessageToProcess}");
                     popClient.DeleteMessages(0, numberOfMessageToProcess);
 
-                    Log.Debug("Disconnect from pop");
+                    this.Log.Debug("Disconnect from pop");
                     popClient.Disconnect(true);
                 }
             }
             catch (Exception e)
             {
-                Log.Error(e);
+                this.Log.Error(e);
             }
         }
 

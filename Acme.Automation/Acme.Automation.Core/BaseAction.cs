@@ -16,18 +16,13 @@ namespace Acme.Automation.Core
     /// <summary>
     /// This represent a base action for all actions.
     /// </summary>
-    public abstract class BaseAction
+    public abstract class BaseAction : BaseLoger
     {
         /// <summary>
         /// Gets or sets the ActionConfiguration.
         /// </summary>
         /// <value>The ActionConfiguration.</value>
         public Action ActionConfiguration { get; set; }
-
-        /// <summary>
-        /// Gets the logger.
-        /// </summary>
-        private ILog Log => LogManager.GetLogger(this.GetType());
 
         /// <summary>
         /// Run the specified action.
