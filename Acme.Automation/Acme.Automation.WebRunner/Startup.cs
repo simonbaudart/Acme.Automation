@@ -103,6 +103,11 @@ namespace Acme.Automation.WebRunner
                 BackgroundJob.Enqueue<AutomationRunner>(automation => automation.Execute(configuration, job));
             }
 
+            foreach (var job in configuration.Jobs)
+            {
+                RecurringJob.RemoveIfExists(job.Id);
+            }
+
             foreach (var job in configuration.Jobs.Where(job => !string.IsNullOrWhiteSpace(job.CronSchedule)))
             {
                 RecurringJob.AddOrUpdate<AutomationRunner>(job.Id, automation => automation.Execute(configuration, job), job.CronSchedule, TimeZoneInfo.Utc);

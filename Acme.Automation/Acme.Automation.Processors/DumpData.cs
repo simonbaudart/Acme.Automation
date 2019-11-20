@@ -8,18 +8,23 @@ namespace Acme.Automation.Processors
     using System.Linq;
 
     using Acme.Automation.Core;
-    using Acme.Automation.Core.Configuration;
 
     /// <summary>
     /// Processor that dumps on the log all the data from the message.
     /// </summary>
-    public class DumpData : BaseProcessor<EmptyConfiguration>
+    public class DumpData : BaseProcessor<DumpDataConfiguration>
     {
         /// <inheritdoc />
-        protected override void Execute(EmptyConfiguration configuration, Message message)
+        protected override void Execute(DumpDataConfiguration configuration, Message message)
         {
             foreach (var item in message.Items)
             {
+                if (configuration == null || !configuration.Truncate)
+                {
+                    this.Log.Info($"{item.Key} : {item.Value}");
+                    continue;
+                }
+
                 var value = item.Value.ToString();
 
                 var indexOfReturn = value.IndexOf('\n');

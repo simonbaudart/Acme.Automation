@@ -21,4 +21,11 @@
       <ProjectReference Include="..\Acme.Automation.Rules\Acme.Automation.Rules.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Update="configuration.json">
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
 </Project>
