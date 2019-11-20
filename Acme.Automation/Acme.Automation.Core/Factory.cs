@@ -11,6 +11,8 @@ namespace Acme.Automation.Core
     using Acme.Automation.Core.Configuration;
     using Acme.Core.Extensions;
 
+    using Newtonsoft.Json.Linq;
+
     using Action = Acme.Automation.Core.Configuration.Action;
 
     /// <summary>
@@ -23,20 +25,18 @@ namespace Acme.Automation.Core
         /// </summary>
         /// <param name="actionConfiguration">The configuration for the action.</param>
         /// <returns>The action in its base type.</returns>
-        public static BaseAction CreateAction(Action actionConfiguration)
+        public static BaseAction CreateAction(JToken actionConfiguration)
         {
             actionConfiguration.ThrowIfNull(nameof(actionConfiguration));
 
-            switch (actionConfiguration.Type)
+            var actionType = actionConfiguration["type"].ToString();
+            switch (actionType)
             {
                 case "simple":
-                    return new SimpleAction
-                    {
-                        ActionConfiguration = actionConfiguration,
-                    };
+                    return actionConfiguration.ToObject<SimpleAction>();
             }
 
-            throw new ConfigurationException($"The action type {actionConfiguration.Type} does not exists.");
+            throw new ConfigurationException($"The action type {actionType} does not exists.");
         }
 
         /// <summary>

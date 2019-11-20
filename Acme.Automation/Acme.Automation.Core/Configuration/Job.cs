@@ -9,6 +9,8 @@ namespace Acme.Automation.Core.Configuration
     using System.Linq;
     using System.Runtime.Serialization;
 
+    using Newtonsoft.Json.Linq;
+
     /// <summary>
     /// Represents a job.
     /// </summary>
@@ -19,7 +21,7 @@ namespace Acme.Automation.Core.Configuration
         /// Gets the actions.
         /// </summary>
         [DataMember(Name = "actions")]
-        public List<Action> Actions { get; } = new List<Action>();
+        public List<JToken> Actions { get; } = new List<JToken>();
 
         /// <summary>
         /// Gets or sets the Connector.

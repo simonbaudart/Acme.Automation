@@ -67,38 +67,7 @@ namespace Acme.Automation.Core.Configuration
 
             var content = File.ReadAllText(path);
             var configuration = JsonConvert.DeserializeObject<AutomationConfiguration>(content);
-            configuration.EnsureValidity();
             return configuration;
-        }
-
-        /// <summary>
-        /// Ensure that the configuration is valid by performing some checks.
-        /// </summary>
-        public void EnsureValidity()
-        {
-            this.Jobs.ForEach(job =>
-            {
-                var connector = this.Connectors.SingleOrDefault(x => x.Id == job.Connector);
-
-                if (connector == null)
-                {
-                    throw new ConfigurationException($"The connector {job.Connector} cannot be found");
-                }
-
-                // Actions are optionals
-                job.Actions?.ForEach(action =>
-                {
-                    var rule = this.Rules.SingleOrDefault(x => x.Id == action.RuleId) ??
-                               throw new ConfigurationException($"The rule {action.RuleId} cannot be found");
-
-                    var processor = this.Processors.SingleOrDefault(x => x.Id == action.Processor);
-
-                    if (processor == null)
-                    {
-                        throw new ConfigurationException($"The processor {action.Processor} cannot be found");
-                    }
-                });
-            });
         }
     }
 }

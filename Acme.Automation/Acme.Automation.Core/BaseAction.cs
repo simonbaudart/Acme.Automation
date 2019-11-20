@@ -6,6 +6,7 @@ namespace Acme.Automation.Core
 {
     using System;
     using System.Linq;
+    using System.Runtime.Serialization;
 
     using Acme.Automation.Core.Configuration;
 
@@ -16,13 +17,15 @@ namespace Acme.Automation.Core
     /// <summary>
     /// This represent a base action for all actions.
     /// </summary>
+    [DataContract]
     public abstract class BaseAction : BaseLoger
     {
         /// <summary>
-        /// Gets or sets the ActionConfiguration.
+        /// Gets or sets the Type.
         /// </summary>
-        /// <value>The ActionConfiguration.</value>
-        public Action ActionConfiguration { get; set; }
+        /// <value>The Type.</value>
+        [DataMember(Name = "type")]
+        public string Type { get; set; }
 
         /// <summary>
         /// Run the specified action.
@@ -32,7 +35,7 @@ namespace Acme.Automation.Core
         /// <param name="message">The message to process.</param>
         public void Run(AutomationConfiguration configuration, Job job, Message message)
         {
-            this.Log.Info($"{job.Id} : Running the action type {this.ActionConfiguration.Type}");
+            this.Log.Info($"{job.Id} : Running the action type {this.Type}");
             this.InternalRun(configuration, job, message);
         }
 
