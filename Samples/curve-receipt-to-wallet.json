@@ -8,14 +8,19 @@
       "connector": "id-of-the-pop-connector",
       "actions": [
         {
-          "rule": "curve-receipt",
-          "processor": "curve-receipt"
-        }
-      ],
-      "groupedActions": [
-        {
-          "rule": "is-receipt",
-          "processor": "wallet-csv"
+          "type": "sequence",
+          "actions": [
+            {
+              "type" : "simple",
+              "rule": "curve-receipt",
+              "processor": "curve-receipt"
+            },
+            {
+              "type" : "simple",
+              "rule": "is-receipt",
+              "processor": "wallet-csv"
+            }
+          ]
         }
       ]
     }

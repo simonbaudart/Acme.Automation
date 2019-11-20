@@ -44,14 +44,25 @@ This is the base of the configuration.
       "connector": "technical-unique-id-for-the-connector",
       "actions": [
         {
+          "type" : "simple",
           "rule": "technical-unique-id-for-the-rule",
           "processor": "technical-unique-id-for-the-processor"
-        }
-      ],
-      "groupedActions": [
+        },
         {
-          "rule": "technical-unique-id-for-the-rule",
-          "processor": "technical-unique-id-for-the-processor"
+          "type" : "sequence",
+          "actions" : 
+          [
+            {
+              "type" : "simple",
+              "rule": "technical-unique-id-for-the-rule-1",
+              "processor": "technical-unique-id-for-the-processor"
+            },
+            {
+              "type" : "simple",
+              "rule": "technical-unique-id-for-the-rule-2",
+              "processor": "technical-unique-id-for-the-processor"
+            }
+          ]
         }
       ]
     }
@@ -69,6 +80,14 @@ This is the base of the configuration.
 ```
 
 #Available parts
+
+## Actions
+
+## simple
+Run an processor if the rule matches.
+
+## sequence
+Run multiples actions on the message, each message is retrieved after the action and sent to the next actions.
 
 ## Connectors
 
