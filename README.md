@@ -79,7 +79,7 @@ This is the base of the configuration.
 }
 ```
 
-#Available parts
+# Available parts
 
 ## Actions
 
