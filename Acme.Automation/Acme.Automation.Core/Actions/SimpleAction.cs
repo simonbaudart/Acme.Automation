@@ -31,14 +31,14 @@ namespace Acme.Automation.Core.Actions
         public string RuleId { get; set; }
 
         /// <inheritdoc />
-        protected override void InternalRun(AutomationConfiguration configuration, Job job, Message message)
+        protected override Message InternalRun(AutomationConfiguration configuration, Job job, Message message)
         {
             var processor = Factory.CreateProcessor(configuration, this.Processor);
 
             if (string.IsNullOrEmpty(this.RuleId))
             {
                 processor.Execute(job, message);
-                return;
+                return message;
             }
 
             var rule = Factory.CreateRule(configuration, this.RuleId);
@@ -47,6 +47,8 @@ namespace Acme.Automation.Core.Actions
             {
                 processor.Execute(job, message);
             }
+
+            return message;
         }
     }
 }

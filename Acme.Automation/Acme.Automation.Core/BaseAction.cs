@@ -33,10 +33,11 @@ namespace Acme.Automation.Core
         /// <param name="configuration">The configuration of the automation.</param>
         /// <param name="job">The source job.</param>
         /// <param name="message">The message to process.</param>
-        public void Run(AutomationConfiguration configuration, Job job, Message message)
+        /// <returns>Return the message.</returns>
+        public Message Run(AutomationConfiguration configuration, Job job, Message message)
         {
             this.Log.Info($"{job.Id} : Running the action type {this.Type}");
-            this.InternalRun(configuration, job, message);
+            return this.InternalRun(configuration, job, message);
         }
 
         /// <summary>
@@ -45,6 +46,7 @@ namespace Acme.Automation.Core
         /// <param name="configuration">The configuration of the automation.</param>
         /// <param name="job">The source job.</param>
         /// <param name="message">The message to process.</param>
-        protected abstract void InternalRun(AutomationConfiguration configuration, Job job, Message message);
+        /// <returns>Return the message.</returns>
+        protected abstract Message InternalRun(AutomationConfiguration configuration, Job job, Message message);
     }
 }

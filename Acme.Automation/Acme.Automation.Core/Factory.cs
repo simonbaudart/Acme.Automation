@@ -13,8 +13,6 @@ namespace Acme.Automation.Core
 
     using Newtonsoft.Json.Linq;
 
-    using Action = Acme.Automation.Core.Configuration.Action;
-
     /// <summary>
     /// Factory for all core related classes.
     /// </summary>
@@ -29,11 +27,19 @@ namespace Acme.Automation.Core
         {
             actionConfiguration.ThrowIfNull(nameof(actionConfiguration));
 
-            var actionType = actionConfiguration["type"].ToString();
+            var actionType = actionConfiguration["type"]?.ToString();
+
+            if (string.IsNullOrWhiteSpace(actionType))
+            {
+                throw new ConfigurationException($"The node {actionConfiguration} do not contains a valid type for the action.");
+            }
+
             switch (actionType)
             {
                 case "simple":
                     return actionConfiguration.ToObject<SimpleAction>();
+                case "sequence":
+                    return actionConfiguration.ToObject<SequenceAction>();
             }
 
             throw new ConfigurationException($"The action type {actionType} does not exists.");
