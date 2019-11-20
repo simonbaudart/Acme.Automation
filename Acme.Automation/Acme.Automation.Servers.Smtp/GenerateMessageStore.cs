@@ -38,10 +38,7 @@ namespace Acme.Automation.Servers.Smtp
             {
                 foreach (var recipient in message.To)
                 {
-                    var senderEmail = sender as MailboxAddress;
-                    var recipientEmail = recipient as MailboxAddress;
-
-                    if (senderEmail == null || recipientEmail == null)
+                    if (!(sender is MailboxAddress senderEmail) || !(recipient is MailboxAddress recipientEmail))
                     {
                         continue;
                     }
