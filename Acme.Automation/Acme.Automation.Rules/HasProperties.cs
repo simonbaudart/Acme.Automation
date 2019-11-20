@@ -10,17 +10,14 @@ namespace Acme.Automation.Rules
 
     using Acme.Automation.Core;
 
-    using Newtonsoft.Json.Linq;
-
     /// <summary>
     /// Rule that check if properties is present.
     /// </summary>
-    public class HasProperties : IRule
+    public class HasProperties : BaseRule<List<string>>
     {
         /// <inheritdoc />
-        public bool IsMatch(JToken config, Message message)
+        protected override bool IsMatch(List<string> properties, Message message)
         {
-            var properties = config.ToObject<List<string>>();
             return properties.All(x => message.Items.ContainsKey(x));
         }
     }

@@ -19,15 +19,13 @@ namespace Acme.Automation.Connectors
         private static SmtpServerListener listener;
 
         /// <inheritdoc />
-        public override List<Message> Execute(SmtpServerConnectorConfig configuration)
+        protected override void Execute(SmtpServerConnectorConfig configuration)
         {
             if (listener == null)
             {
                 listener = new SmtpServerListener(configuration.ServerName, configuration.Ports);
                 listener.Start();
             }
-
-            return new List<Message>();
         }
     }
 }

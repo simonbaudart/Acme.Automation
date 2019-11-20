@@ -8,16 +8,17 @@ namespace Acme.Automation.Rules
     using System.Linq;
 
     using Acme.Automation.Core;
+    using Acme.Automation.Core.Configuration;
 
     using Newtonsoft.Json.Linq;
 
     /// <summary>
     /// This rule ... always match ! Yeah, really !.
     /// </summary>
-    public class AlwaysMatch : IRule
+    public class AlwaysMatch : BaseRule<EmptyConfiguration>
     {
         /// <inheritdoc />
-        public bool IsMatch(JToken config, Message message)
+        protected override bool IsMatch(EmptyConfiguration config, Message message)
         {
             return true;
         }

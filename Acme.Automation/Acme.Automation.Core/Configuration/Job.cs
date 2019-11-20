@@ -9,6 +9,8 @@ namespace Acme.Automation.Core.Configuration
     using System.Linq;
     using System.Runtime.Serialization;
 
+    using Newtonsoft.Json.Linq;
+
     /// <summary>
     /// Represents a job.
     /// </summary>
@@ -19,7 +21,7 @@ namespace Acme.Automation.Core.Configuration
         /// Gets the actions.
         /// </summary>
         [DataMember(Name = "actions")]
-        public List<Action> Actions { get; } = new List<Action>();
+        public List<JToken> Actions { get; } = new List<JToken>();
 
         /// <summary>
         /// Gets or sets the Connector.
@@ -35,12 +37,6 @@ namespace Acme.Automation.Core.Configuration
         /// <value>The CronSchedule.</value>
         [DataMember(Name = "cronSchedule")]
         public string CronSchedule { get; set; }
-
-        /// <summary>
-        /// Gets the actions that must be ran on all messages at once.
-        /// </summary>
-        [DataMember(Name = "groupedActions")]
-        public List<Action> GroupedActions { get; } = new List<Action>();
 
         /// <summary>
         /// Gets or sets a value indicating whether the job runs at startup.

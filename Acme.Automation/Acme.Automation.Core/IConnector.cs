@@ -17,7 +17,6 @@ namespace Acme.Automation.Core
         /// Execute the connector.
         /// </summary>
         /// <param name="config">The config, or null if no configuration.</param>
-        /// <returns>List of messages.</returns>
-        List<Message> Execute(JToken config);
+        void Execute(JToken config);
     }
 }

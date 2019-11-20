@@ -7,6 +7,8 @@ namespace Acme.Automation.Core
     using System;
     using System.Linq;
 
+    using Acme.Automation.Core.Configuration;
+
     using Newtonsoft.Json.Linq;
 
     /// <summary>
@@ -15,11 +17,16 @@ namespace Acme.Automation.Core
     public interface IRule
     {
         /// <summary>
+        /// Gets or sets the rule configuration.
+        /// </summary>
+        Rule RuleConfiguration { get; set; }
+
+        /// <summary>
         /// Determines if a rule match a message.
         /// </summary>
-        /// <param name="config">The rule specific part of the config.</param>
+        /// <param name="job">The source job.</param>
         /// <param name="message">The message to be checked.</param>
-        /// <returns>True if the rule succeed.</returns>
-        bool IsMatch(JToken config, Message message);
+        /// <returns>True if the rule matches.</returns>
+        bool IsMatch(Job job, Message message);
     }
 }

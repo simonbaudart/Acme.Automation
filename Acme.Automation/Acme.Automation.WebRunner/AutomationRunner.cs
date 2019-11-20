@@ -11,7 +11,7 @@ namespace Acme.Automation.WebRunner
     {
         public void Execute(AutomationConfiguration configuration, Job job)
         {
-            new Worker().Execute(configuration, job);
+            new JobRunner().Run(configuration, job);
         }
     }
 }
