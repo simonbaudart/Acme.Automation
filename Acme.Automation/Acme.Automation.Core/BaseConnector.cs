@@ -14,7 +14,6 @@ namespace Acme.Automation.Core
     /// </summary>
     /// <typeparam name="TConfiguration">The type of the configuration.</typeparam>
     /// <seealso cref="Acme.Automation.Core.IConnector" />
-    /// <seealso cref="IConnector" />
     public abstract class BaseConnector<TConfiguration> : BaseMessageProvider, IConnector
         where TConfiguration : class
     {

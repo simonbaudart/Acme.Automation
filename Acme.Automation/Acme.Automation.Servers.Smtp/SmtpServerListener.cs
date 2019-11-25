@@ -1,4 +1,4 @@
-// <copyright file="SmtpServerConnector.cs" company="Acme">
+// <copyright file="SmtpServerListener.cs" company="Acme">
 // Copyright (c) Acme. All rights reserved.
 // </copyright>
 
@@ -9,30 +9,13 @@ namespace Acme.Automation.Servers.Smtp
     using System.Threading;
     using System.Threading.Tasks;
 
-    using log4net;
+    using Acme.Automation.Core;
 
     using SmtpServer;
 
-    public class SmtpServerListener
+    public class SmtpServerListener : BaseLoger
     {
-        /// <summary>
-        /// Define the logger.
-        /// </summary>
-        private static readonly ILog Log = LogManager.GetLogger(typeof(SmtpServerListener));
-
-        private SmtpServer smtpServer;
-
-        /// <summary>
-        /// Gets the Ports.
-        /// </summary>
-        /// <value>The Ports.</value>
-        public int[] Ports { get; }
-
-        /// <summary>
-        /// Gets the ServerName.
-        /// </summary>
-        /// <value>The ServerName.</value>
-        public string ServerName { get; }
+        private SmtpServer _smtpServer;
 
         public SmtpServerListener(string serverName, params int[] ports)
         {
@@ -41,23 +24,50 @@ namespace Acme.Automation.Servers.Smtp
         }
 
         /// <summary>
+        /// Handle a message received.
+        /// </summary>
+        /// <param name="sender">The sender that gets the message.</param>
+        /// <param name="message">The message that has been received.</param>
+        public delegate void MessageReceivedHandler(object sender, Message message);
+
+        /// <summary>
+        /// Event raised when a message is received from the provider.
+        /// </summary>
+        public event MessageReceivedHandler MessageReceived;
+
+        /// <summary>
+        /// Gets the Ports.
+        /// </summary>
+        /// <value>The Ports.</value>
+        private int[] Ports { get; }
+
+        /// <summary>
+        /// Gets the ServerName.
+        /// </summary>
+        /// <value>The ServerName.</value>
+        private string ServerName { get; }
+
+        /// <summary>
         /// Start a new server.
         /// </summary>
         /// <returns>The task to wait for</returns>
         public async Task Start()
         {
-            Log.Info($"STARTING NEW SMTP SERVER ON {this.ServerName}:{string.Join(",", this.Ports)}");
+            this.Log.Info($"STARTING NEW SMTP SERVER ON {this.ServerName}:{string.Join(",", this.Ports)}");
+
+            var generateMessageStore = new GenerateMessageStore();
+            generateMessageStore.MessageReceived += (sender, message) => { this.MessageReceived?.Invoke(this, message); };
 
             var options = new SmtpServerOptionsBuilder()
                 .ServerName(this.ServerName)
                 .Port(this.Ports)
-                .MessageStore(new GenerateMessageStore())
+                .MessageStore(generateMessageStore)
                 .MailboxFilter(new AlwaysYesMailboxFilter())
                 .UserAuthenticator(new AlwaysYesAuthenticator())
                 .Build();
 
-            this.smtpServer = new SmtpServer(options);
-            await this.smtpServer.StartAsync(CancellationToken.None);
+            this._smtpServer = new SmtpServer(options);
+            await this._smtpServer.StartAsync(CancellationToken.None);
         }
     }
 }

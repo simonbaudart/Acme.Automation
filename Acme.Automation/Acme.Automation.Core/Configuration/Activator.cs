@@ -1,4 +1,4 @@
-// <copyright file="Connector.cs" company="Acme">
+// <copyright file="Activator.cs" company="Acme">
 // Copyright (c) Acme. All rights reserved.
 // </copyright>
 
@@ -9,10 +9,10 @@ namespace Acme.Automation.Core.Configuration
     using System.Runtime.Serialization;
 
     /// <summary>
-    /// Represent a connector that can be run from a job.
+    /// Represent an activator that can be started from a job.
     /// </summary>
     [DataContract]
-    public class Connector : BaseTypedConfigurationItem
+    public class Activator : BaseTypedConfigurationItem
     {
     }
 }

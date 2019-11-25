@@ -2,7 +2,7 @@
 // Copyright (c) Acme. All rights reserved.
 // </copyright>
 
-namespace Acme.Automation.Connectors
+namespace Acme.Automation.Activators
 {
     using System.Runtime.Serialization;
 

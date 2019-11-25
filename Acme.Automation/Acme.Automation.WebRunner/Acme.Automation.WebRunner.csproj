@@ -15,6 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Acme.Automation.Activators\Acme.Automation.Activators.csproj" />
       <ProjectReference Include="..\Acme.Automation.Connectors\Acme.Automation.Connectors.csproj" />
       <ProjectReference Include="..\Acme.Automation.Core\Acme.Automation.Core.csproj" />
       <ProjectReference Include="..\Acme.Automation.Processors\Acme.Automation.Processors.csproj" />

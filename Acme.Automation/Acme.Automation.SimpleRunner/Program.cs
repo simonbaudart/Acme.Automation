@@ -43,7 +43,7 @@ namespace Acme.Automation.SimpleRunner
             var configuration = AutomationConfiguration.Read(path);
             foreach (var job in configuration.Jobs.Where(job => job.RunAtStartup))
             {
-                new JobRunner().Run(configuration, job);
+                new JobRunner().RunAtStartup(configuration, job);
             }
 
             Log.Info("STOP CONSOLE");

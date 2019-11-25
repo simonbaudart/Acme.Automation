@@ -13,6 +13,8 @@ namespace Acme.Automation.Core
 
     using Newtonsoft.Json.Linq;
 
+    using Activator = Acme.Automation.Core.Configuration.Activator;
+
     /// <summary>
     /// Factory for all core related classes.
     /// </summary>
@@ -48,6 +50,26 @@ namespace Acme.Automation.Core
         /// <summary>
         /// Create a connector with reflection.
         /// </summary>
+        /// <param name="activatorConfiguration">The activator configuration to be created.</param>
+        /// <returns>The connector.</returns>
+        public static IActivator CreateActivator(Activator activatorConfiguration)
+        {
+            activatorConfiguration.ThrowIfNull(nameof(activatorConfiguration));
+
+            var activatorType = Type.GetType(activatorConfiguration.Type) ??
+                                throw new ConfigurationException($"The connector type {activatorConfiguration.Type} cannot be found");
+
+            var instance = System.Activator.CreateInstance(activatorType) as IActivator ??
+                   throw new ConfigurationException($"The connector type {activatorConfiguration.Type} does not implement IActivator");
+
+            instance.Id = activatorConfiguration.Id;
+
+            return instance;
+        }
+
+        /// <summary>
+        /// Create a connector with reflection.
+        /// </summary>
         /// <param name="connectorConfiguration">The connector to be found.</param>
         /// <returns>The connector.</returns>
         public static IConnector CreateConnector(Connector connectorConfiguration)
@@ -57,7 +79,7 @@ namespace Acme.Automation.Core
             var connectorType = Type.GetType(connectorConfiguration.Type) ??
                                 throw new ConfigurationException($"The connector type {connectorConfiguration.Type} cannot be found");
 
-            return Activator.CreateInstance(connectorType) as IConnector ??
+            return System.Activator.CreateInstance(connectorType) as IConnector ??
                    throw new ConfigurationException($"The connector type {connectorConfiguration.Type} does not implement IConnector");
         }
 
@@ -87,7 +109,7 @@ namespace Acme.Automation.Core
             var processorType = Type.GetType(processorConfiguration.Type) ??
                                 throw new ConfigurationException($"The processor type {processorConfiguration.Type} cannot be found");
 
-            var instance = Activator.CreateInstance(processorType) as IProcessor ??
+            var instance = System.Activator.CreateInstance(processorType) as IProcessor ??
                            throw new ConfigurationException($"The processor type {processorConfiguration.Type} does not implement IProcessor");
 
             instance.ProcessorConfiguration = processorConfiguration;
@@ -121,7 +143,7 @@ namespace Acme.Automation.Core
             var ruleType = Type.GetType(ruleConfiguration.Type) ??
                            throw new ConfigurationException($"The rule type {ruleConfiguration.Type} cannot be found");
 
-            var instance = Activator.CreateInstance(ruleType) as IRule ??
+            var instance = System.Activator.CreateInstance(ruleType) as IRule ??
                            throw new ConfigurationException($"The rule type {ruleConfiguration.Type} does not implement IRule");
 
             instance.RuleConfiguration = ruleConfiguration;

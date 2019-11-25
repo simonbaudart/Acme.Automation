@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Acme.Automation.Core\Acme.Automation.Core.csproj" />
+      <ProjectReference Include="..\Acme.Automation.Servers.Smtp\Acme.Automation.Servers.Smtp.csproj" />
+    </ItemGroup>
+
+</Project>

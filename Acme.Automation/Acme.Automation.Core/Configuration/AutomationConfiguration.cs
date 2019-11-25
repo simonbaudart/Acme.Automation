@@ -22,6 +22,13 @@ namespace Acme.Automation.Core.Configuration
     public class AutomationConfiguration
     {
         /// <summary>
+        /// Gets the Activators.
+        /// </summary>
+        /// <value>The Activators.</value>
+        [DataMember(Name = "activators")]
+        public List<Activator> Activators { get; } = new List<Activator>();
+
+        /// <summary>
         /// Gets the Connectors.
         /// </summary>
         /// <value>The Connectors.</value>
