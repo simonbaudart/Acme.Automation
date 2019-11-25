@@ -29,10 +29,17 @@ namespace Acme.Automation.Core.Models
         public string FileName { get; set; }
 
         /// <summary>
-        /// Gets or sets the ContentType.
+        /// Gets or sets the MimeType.
         /// </summary>
-        /// <value>The ContentType.</value>
-        [DataMember(Name = "contentType")]
-        public string ContentType { get; set; }
+        /// <value>The MimeType.</value>
+        [DataMember(Name = "mimeType")]
+        public string MimeType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the MediaType.
+        /// </summary>
+        /// <value>The MediaType.</value>
+        [DataMember(Name = "mediaType")]
+        public string MediaType { get; set; }
     }
 }

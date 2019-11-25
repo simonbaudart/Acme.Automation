@@ -5,12 +5,15 @@
 namespace Acme.Automation.Connectors
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
 
     using Acme.Automation.Core;
+    using Acme.Automation.Core.Converters;
+    using Acme.Core.Extensions;
 
     using MailKit.Net.Pop3;
+
+    using MimeKit;
 
     /// <summary>
     /// <see cref="Pop3Connector" />.
@@ -43,14 +46,7 @@ namespace Acme.Automation.Connectors
 
                     foreach (var mail in mails)
                     {
-                        var froms = mail.From.Mailboxes.Select(x => x.Address);
-                        var tos = mail.To.Mailboxes.Select(x => x.Address);
-                        var subject = mail.Subject;
-                        var htmlBody = mail.HtmlBody;
-                        var textBody = mail.TextBody;
-                        var date = mail.Date;
-
-                        this.ProcessMails(froms, tos, date, subject, htmlBody, textBody);
+                        this.ProcessMails(mail);
                     }
 
                     this.Log.Debug($"Deleting message from 0 to {numberOfMessageToProcess}");
@@ -66,23 +62,21 @@ namespace Acme.Automation.Connectors
             }
         }
 
-        private void ProcessMails(IEnumerable<string> senders, IEnumerable<string> recipients, DateTimeOffset date, string subject, string htmlBody, string textBody)
+        private void ProcessMails(MimeMessage message)
         {
-            var recipientsList = recipients.ToList();
+            message.ThrowIfNull(nameof(message));
 
-            foreach (var sender in senders)
+            foreach (var sender in message.From)
             {
-                foreach (var recipient in recipientsList)
+                foreach (var recipient in message.To)
                 {
-                    var message = new Message();
-                    message.Items.Add("sender", sender);
-                    message.Items.Add("recipient", recipient);
-                    message.Items.Add("date", date);
-                    message.Items.Add("subject", subject);
-                    message.Items.Add("htmlBody", htmlBody);
-                    message.Items.Add("textBody", textBody);
+                    if (!(sender is MailboxAddress senderEmail) || !(recipient is MailboxAddress recipientEmail))
+                    {
+                        continue;
+                    }
 
-                    this.RaiseMessageReceived(message);
+                    var acmeMessage = MimeKitConverter.ConvertToMessage(senderEmail, recipientEmail, message);
+                    this.RaiseMessageReceived(acmeMessage);
                 }
             }
         }

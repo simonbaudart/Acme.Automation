@@ -37,7 +37,7 @@ namespace Acme.Automation.Processors
                 {
                     foreach (var fileData in attachments)
                     {
-                        var attachment = new Attachment(new MemoryStream(Convert.FromBase64String(fileData.Base64Content)), fileData.FileName, fileData.ContentType);
+                        var attachment = new Attachment(new MemoryStream(Convert.FromBase64String(fileData.Base64Content)), fileData.FileName);
                         mailMessage.Attachments.Add(attachment);
                     }
                 }

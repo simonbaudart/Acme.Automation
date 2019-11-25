@@ -14,7 +14,7 @@ namespace Acme.Automation.Core
     /// <summary>
     /// This represents a message that is get from a connector, checked by rules and executed by processor.
     /// </summary>
-    public class Message
+    public class Message : BaseLoger
     {
         /// <summary>
         /// Gets the items.
@@ -52,8 +52,9 @@ namespace Acme.Automation.Core
             {
                 return this.Items[key].ToObject<T>();
             }
-            catch (JsonSerializationException)
+            catch (JsonSerializationException e)
             {
+                this.Log.Warn(e);
                 return default;
             }
         }

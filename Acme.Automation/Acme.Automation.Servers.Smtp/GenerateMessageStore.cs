@@ -12,6 +12,7 @@ namespace Acme.Automation.Servers.Smtp
     using System.Threading.Tasks;
 
     using Acme.Automation.Core;
+    using Acme.Automation.Core.Converters;
     using Acme.Automation.Core.Models;
 
     using log4net;
@@ -19,6 +20,7 @@ namespace Acme.Automation.Servers.Smtp
     using MimeKit;
 
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
 
     using SmtpServer;
     using SmtpServer.Mail;
@@ -60,16 +62,7 @@ namespace Acme.Automation.Servers.Smtp
                         continue;
                     }
 
-                    var acmeMessage = new Message();
-                    acmeMessage.Items.Add("sender", senderEmail.Address);
-                    acmeMessage.Items.Add("recipient", recipientEmail.Address);
-                    acmeMessage.Items.Add("date", message.Date);
-                    acmeMessage.Items.Add("subject", message.Subject);
-                    acmeMessage.Items.Add("htmlBody", message.HtmlBody);
-                    acmeMessage.Items.Add("textBody", message.TextBody);
-
-                    var attachments = this.GetAttachments(message);
-                    acmeMessage.Items.Add("attachments", JsonConvert.SerializeObject(attachments));
+                    var acmeMessage = MimeKitConverter.ConvertToMessage(senderEmail, recipientEmail, message);
 
                     Log.Info($"INCOMING FROM {senderEmail.Address} TO {recipientEmail.Address} : {message.Subject}");
 
@@ -78,33 +71,6 @@ namespace Acme.Automation.Servers.Smtp
             }
 
             return Task.FromResult(SmtpResponse.Ok);
-        }
-
-        private List<FileData> GetAttachments(MimeMessage message)
-        {
-            if (message.Attachments == null || !message.Attachments.Any())
-            {
-                return null;
-            }
-
-            var attachments = new List<FileData>();
-
-            foreach (var attachment in message.Attachments)
-            {
-                var file = new FileData();
-                file.FileName = attachment.ContentDisposition?.FileName ?? Guid.NewGuid().ToString();
-                file.ContentType = attachment.ContentType.ToString();
-
-                using (var memoryAttachment = new MemoryStream())
-                {
-                    attachment.WriteTo(memoryAttachment);
-                    file.Base64Content = Convert.ToBase64String(memoryAttachment.ToArray());
-                }
-
-                attachments.Add(file);
-            }
-
-            return attachments;
         }
     }
 }
