@@ -4,7 +4,7 @@
 
 namespace Acme.Automation.Servers.Smtp
 {
-    using System.Collections.Generic;
+    using System;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
@@ -27,12 +27,24 @@ namespace Acme.Automation.Servers.Smtp
         /// </summary>
         private static readonly ILog Log = LogManager.GetLogger(typeof(GenerateMessageStore));
 
+        /// <summary>
+        /// Handle a message received.
+        /// </summary>
+        /// <param name="sender">The sender that gets the message.</param>
+        /// <param name="message">The message that has been received.</param>
+        public delegate void MessageReceivedHandler(object sender, Message message);
+
+        /// <summary>
+        /// Event raised when a message is received from the provider.
+        /// </summary>
+        public event MessageReceivedHandler MessageReceived;
+
         /// <inheritdoc />
         public override Task<SmtpResponse> SaveAsync(ISessionContext context, IMessageTransaction transaction, CancellationToken cancellationToken)
         {
             var textMessage = (ITextMessage)transaction.Message;
 
-            var message = MimeKit.MimeMessage.Load(textMessage.Content);
+            var message = MimeMessage.Load(textMessage.Content);
 
             foreach (var sender in message.From)
             {
@@ -52,6 +64,8 @@ namespace Acme.Automation.Servers.Smtp
                     acmeMessage.Items.Add("textBody", message.TextBody);
 
                     Log.Info($"INCOMING FROM {senderEmail.Address} TO {recipientEmail.Address} : {message.Subject}");
+
+                    this.MessageReceived?.Invoke(this, acmeMessage);
                 }
             }
 
