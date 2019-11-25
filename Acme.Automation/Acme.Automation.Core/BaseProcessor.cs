@@ -26,8 +26,15 @@ namespace Acme.Automation.Core
         /// <inheritdoc />
         public void Execute(Job job, Message message)
         {
-            this.Log.Info($"{job.Id} : Running the processor id : {this.ProcessorConfiguration.Id}");
-            this.Execute(this.ProcessorConfiguration.Config?.ToObject<TConfiguration>(), message);
+            try
+            {
+                this.Log.Info($"{job.Id} : Running the processor id : {this.ProcessorConfiguration.Id}");
+                this.Execute(this.ProcessorConfiguration.Config?.ToObject<TConfiguration>(), message);
+            }
+            catch (Exception e)
+            {
+                this.Log.Error($"{job.Id} : Running the processor id : {this.ProcessorConfiguration.Id}", e);
+            }
         }
 
         /// <summary>

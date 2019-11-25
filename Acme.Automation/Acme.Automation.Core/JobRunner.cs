@@ -53,7 +53,15 @@ namespace Acme.Automation.Core
 
             foreach (var actionRunner in job.Actions.Select(Factory.CreateAction))
             {
-                actionRunner.Run(configuration, job, message);
+                try
+                {
+                    actionRunner.Run(configuration, job, message);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
             }
         }
 

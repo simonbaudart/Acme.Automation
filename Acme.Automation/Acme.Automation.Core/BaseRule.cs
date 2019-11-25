@@ -26,8 +26,18 @@ namespace Acme.Automation.Core
         /// <inheritdoc />
         public bool IsMatch(Job job, Message message)
         {
-            this.Log.Info($"{job.Id} : Checking the rule : {this.RuleConfiguration.Id}");
-            return this.IsMatch(this.RuleConfiguration.Config?.ToObject<TConfiguration>(), message);
+            try
+            {
+                var result = this.IsMatch(this.RuleConfiguration.Config?.ToObject<TConfiguration>(), message);
+                this.Log.Info($"{job.Id} : Checking the rule : {this.RuleConfiguration.Id} : {result.ToString().ToLowerInvariant()}");
+                return result;
+            }
+            catch (Exception e)
+            {
+                this.Log.Error($"{job.Id} : Checking the rule : {this.RuleConfiguration.Id}", e);
+            }
+
+            return false;
         }
 
         /// <summary>

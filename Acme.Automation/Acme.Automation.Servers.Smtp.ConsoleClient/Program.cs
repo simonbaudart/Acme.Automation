@@ -25,7 +25,14 @@ namespace Acme.Automation.Servers.Smtp.ConsoleClient
                 if (from != null && to != null)
                 {
                     var mail = new MailMessage(from, to, subject, body);
-                    new SmtpClient("localhost").Send(mail);
+                    try
+                    {
+                        new SmtpClient("localhost").Send(mail);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
                 }
             }
         }
