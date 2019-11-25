@@ -24,6 +24,13 @@ namespace Acme.Automation.Core.Configuration
         public List<JToken> Actions { get; } = new List<JToken>();
 
         /// <summary>
+        /// Gets or sets the Actuator.
+        /// </summary>
+        /// <value>The Actuator.</value>
+        [DataMember(Name = "activator")]
+        public string Activator { get; set; }
+
+        /// <summary>
         /// Gets or sets the Connector.
         /// </summary>
         /// <value>The Connector.</value>

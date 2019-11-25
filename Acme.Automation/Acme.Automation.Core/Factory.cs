@@ -13,6 +13,8 @@ namespace Acme.Automation.Core
 
     using Newtonsoft.Json.Linq;
 
+    using Activator = System.Activator;
+
     /// <summary>
     /// Factory for all core related classes.
     /// </summary>
