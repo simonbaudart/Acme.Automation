@@ -66,7 +66,7 @@ namespace Acme.Automation.Core.Converters
 
                 using (var memoryAttachment = new MemoryStream())
                 {
-                    attachment.WriteTo(memoryAttachment);
+                    attachmentPart.Content.DecodeTo(memoryAttachment);
                     file.Base64Content = Convert.ToBase64String(memoryAttachment.ToArray());
                 }
 
