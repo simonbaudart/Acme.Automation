@@ -42,6 +42,7 @@ This is the base of the configuration.
       "runAtStartup": true,
       "cronSchedule": "* * * * *",
       "connector": "technical-unique-id-for-the-connector",
+      "activator": "technical-unique-id-for-the-activator",
       "actions": [
         {
           "type" : "simple",
@@ -89,6 +90,40 @@ Run an processor if the rule matches.
 ## sequence
 Run multiples actions on the message, each message is retrieved after the action and sent to the next actions.
 
+## Activators
+
+### PingActivator
+Just for fun, launch a ping message in the queue.
+
+### SmtpServerActivator
+SMTP server that will listen on ports and send a message in the queue if a mail arrived.
+
+#### Configuration
+```json
+{
+  "id": "smtp-server-acme-automation.tech",
+  "friendlyName": "Start a new Smtp Server",
+  "type": "Acme.Automation.Activators.SmtpServerActivator, Acme.Automation.Activators",
+  "config": {
+    "serverName": "localhost",
+    "ports": [
+      25,
+      587
+    ]
+  }
+}
+```
+
+### Output
+The message will contains the following data :
+* sender : sender of the mail.
+* recipient : recipient of the mail. If there is multiple recipients, a message will be created for each.
+* date : date of the email.
+* subject : subject of the email.
+* htmlBody : the html body of the email.
+* textBody : the text body of the email.
+* attachments : a list of FileData for each attachment.
+
 ## Connectors
 
 ### Pop3 connector
@@ -119,6 +154,7 @@ The message will contains the following data :
 * subject : subject of the email.
 * htmlBody : the html body of the email.
 * textBody : the text body of the email.
+* attachments : a list of FileData for each attachment.
 
 ## Rules
 
@@ -166,6 +202,23 @@ Return true if the message contains all the specified properties.
 }
 ```
 
+### PropertyMatchRegex
+Return true if the property match the regex.
+
+#### Configuration
+
+```json
+{
+  "id": "is-to-blabla.com",
+  "friendlyName": "Is it an email to blabla.com ?",
+  "type": "Acme.Automation.Rules.PropertyMatchRegex, Acme.Automation.Rules",
+  "config": {
+    "property": "recipient",
+    "match" : "@blabla\\.com$"
+  }
+}
+```
+
 ## Processors
 
 ### Dump Data
@@ -204,6 +257,29 @@ Read the transaction property in the message and create a csv. Send the csv as a
   "id": "wallet-csv",
   "friendlyName": "Wallet Csv Import",
   "type": "Acme.Automation.Processors.WalletCsvImport, Acme.Automation.Processors",
+  "config": {
+    "sender" : "from@mail.com",
+    "recipient": "to@mail.com",
+    "smtp": {
+      "host": "smtp@mail.com",
+      "port": 587,
+      "username": "username",
+      "password": "xxxxxxxx"
+    }
+  }
+}
+```
+
+### Forward Email
+Read the information from the message (same as the connectors) and forward the mail to the recipient in the configuration.
+
+#### Configuration
+
+```json
+{
+  "id": "forward-mail",
+  "friendlyName": "Forward email to to@mail.com",
+  "type": "Acme.Automation.Processors.ForwardEmail, Acme.Automation.Processors",
   "config": {
     "sender" : "from@mail.com",
     "recipient": "to@mail.com",
