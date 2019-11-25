@@ -4,6 +4,9 @@
 
 namespace Acme.Automation.Core
 {
+    using System;
+    using System.Linq;
+
     using Newtonsoft.Json.Linq;
 
     /// <summary>
@@ -11,6 +14,11 @@ namespace Acme.Automation.Core
     /// </summary>
     public interface IActivator
     {
+        /// <summary>
+        /// Gets or sets the id of the activator.
+        /// </summary>
+        string Id { get; set; }
+
         /// <summary>
         /// Start the actuator.
         /// </summary>

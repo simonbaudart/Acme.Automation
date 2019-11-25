@@ -100,7 +100,7 @@ namespace Acme.Automation.WebRunner
 
             foreach (var job in configuration.Jobs.Where(job => job.RunAtStartup))
             {
-                BackgroundJob.Enqueue<AutomationRunner>(automation => automation.Execute(configuration, job));
+                BackgroundJob.Enqueue<AutomationRunner>(automation => automation.RunAtStartup(configuration, job));
             }
 
             foreach (var job in configuration.Jobs)
@@ -110,7 +110,7 @@ namespace Acme.Automation.WebRunner
 
             foreach (var job in configuration.Jobs.Where(job => !string.IsNullOrWhiteSpace(job.CronSchedule)))
             {
-                RecurringJob.AddOrUpdate<AutomationRunner>(job.Id, automation => automation.Execute(configuration, job), job.CronSchedule, TimeZoneInfo.Utc);
+                RecurringJob.AddOrUpdate<AutomationRunner>(job.Id, automation => automation.RunRecurring(configuration, job), job.CronSchedule, TimeZoneInfo.Utc);
             }
         }
     }

@@ -18,6 +18,9 @@ namespace Acme.Automation.Core
         where TConfiguration : class
     {
         /// <inheritdoc />
+        public string Id { get; set; }
+
+        /// <inheritdoc />
         void IActivator.Start(JToken config)
         {
             this.Start(config?.ToObject<TConfiguration>());
