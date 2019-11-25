@@ -6,6 +6,7 @@ namespace Acme.Automation.Core
 {
     using System;
     using System.Linq;
+    using System.Threading;
 
     using Acme.Core.Extensions;
 
@@ -34,7 +35,8 @@ namespace Acme.Automation.Core
         {
             message.ThrowIfNull(nameof(message));
 
-            this.MessageReceived?.Invoke(this, message);
+            var thread = new Thread(() => { this.MessageReceived?.Invoke(this, message); });
+            thread.Start();
         }
     }
 }
