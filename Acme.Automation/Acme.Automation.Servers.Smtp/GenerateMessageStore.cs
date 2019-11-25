@@ -5,15 +5,20 @@
 namespace Acme.Automation.Servers.Smtp
 {
     using System;
+    using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Acme.Automation.Core;
+    using Acme.Automation.Core.Models;
 
     using log4net;
 
     using MimeKit;
+
+    using Newtonsoft.Json;
 
     using SmtpServer;
     using SmtpServer.Mail;
@@ -63,6 +68,9 @@ namespace Acme.Automation.Servers.Smtp
                     acmeMessage.Items.Add("htmlBody", message.HtmlBody);
                     acmeMessage.Items.Add("textBody", message.TextBody);
 
+                    var attachments = this.GetAttachments(message);
+                    acmeMessage.Items.Add("attachments", JsonConvert.SerializeObject(attachments));
+
                     Log.Info($"INCOMING FROM {senderEmail.Address} TO {recipientEmail.Address} : {message.Subject}");
 
                     this.MessageReceived?.Invoke(this, acmeMessage);
@@ -70,6 +78,32 @@ namespace Acme.Automation.Servers.Smtp
             }
 
             return Task.FromResult(SmtpResponse.Ok);
+        }
+
+        private List<FileData> GetAttachments(MimeMessage message)
+        {
+            if (message.Attachments == null || !message.Attachments.Any())
+            {
+                return null;
+            }
+
+            var attachments = new List<FileData>();
+
+            foreach (var attachment in message.Attachments)
+            {
+                var file = new FileData();
+                file.FileName = attachment.ContentDisposition?.FileName ?? Guid.NewGuid().ToString();
+
+                using (var memoryAttachment = new MemoryStream())
+                {
+                    attachment.WriteTo(memoryAttachment);
+                    file.Base64Content = Convert.ToBase64String(memoryAttachment.ToArray());
+                }
+
+                attachments.Add(file);
+            }
+
+            return attachments;
         }
     }
 }
