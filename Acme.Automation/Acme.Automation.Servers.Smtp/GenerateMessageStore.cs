@@ -93,6 +93,7 @@ namespace Acme.Automation.Servers.Smtp
             {
                 var file = new FileData();
                 file.FileName = attachment.ContentDisposition?.FileName ?? Guid.NewGuid().ToString();
+                file.ContentType = attachment.ContentType.ToString();
 
                 using (var memoryAttachment = new MemoryStream())
                 {

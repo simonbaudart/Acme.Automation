@@ -27,5 +27,12 @@ namespace Acme.Automation.Core.Models
         /// <value>The FileName.</value>
         [DataMember(Name = "fileName")]
         public string FileName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the ContentType.
+        /// </summary>
+        /// <value>The ContentType.</value>
+        [DataMember(Name = "contentType")]
+        public string ContentType { get; set; }
     }
 }

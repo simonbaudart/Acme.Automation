@@ -8,6 +8,7 @@ namespace Acme.Automation.Core
     using System.Collections.Generic;
     using System.Linq;
 
+    using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
     /// <summary>
@@ -42,7 +43,19 @@ namespace Acme.Automation.Core
         /// <returns>The value of the item, converted to type T.</returns>
         public T Get<T>(string key)
         {
-            return this.Items.ContainsKey(key) ? this.Items[key].ToObject<T>() : default;
+            if (!this.Items.ContainsKey(key) || this.Items[key] == null || this.Items[key].Value<object>() == null)
+            {
+                return default;
+            }
+
+            try
+            {
+                return this.Items[key].ToObject<T>();
+            }
+            catch (JsonSerializationException)
+            {
+                return default;
+            }
         }
     }
 }
