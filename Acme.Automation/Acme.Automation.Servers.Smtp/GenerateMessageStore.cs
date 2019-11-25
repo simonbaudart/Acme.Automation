@@ -62,11 +62,17 @@ namespace Acme.Automation.Servers.Smtp
                         continue;
                     }
 
-                    var acmeMessage = MimeKitConverter.ConvertToMessage(senderEmail, recipientEmail, message);
+                    try
+                    {
+                        var acmeMessage = MimeKitConverter.ConvertToMessage(senderEmail, recipientEmail, message);
+                        Log.Info($"INCOMING FROM {senderEmail.Address} TO {recipientEmail.Address} : {message.Subject}");
 
-                    Log.Info($"INCOMING FROM {senderEmail.Address} TO {recipientEmail.Address} : {message.Subject}");
-
-                    this.MessageReceived?.Invoke(this, acmeMessage);
+                        this.MessageReceived?.Invoke(this, acmeMessage);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error(e);
+                    }
                 }
             }
 

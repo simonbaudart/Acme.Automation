@@ -47,7 +47,7 @@ namespace Acme.Automation.Core.Converters
         {
             if (message.Attachments == null || !message.Attachments.Any())
             {
-                return null;
+                return new List<FileData>();
             }
 
             var attachments = new List<FileData>();

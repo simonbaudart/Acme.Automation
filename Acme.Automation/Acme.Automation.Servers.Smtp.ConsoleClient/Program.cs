@@ -22,17 +22,17 @@ namespace Acme.Automation.Servers.Smtp.ConsoleClient
                 Console.WriteLine("Body ?");
                 var body = Console.ReadLine();
 
-                Console.WriteLine("Attach ?");
-                var attach = Console.ReadLine();
+//                Console.WriteLine("Attach ?");
+//                var attach = Console.ReadLine();
 
                 if (from != null && to != null)
                 {
                     var mail = new MailMessage(from, to, subject, body);
 
-                    if (!string.IsNullOrEmpty(attach))
-                    {
-                        mail.Attachments.Add(new Attachment(attach));
-                    }
+//                    if (!string.IsNullOrEmpty(attach))
+//                    {
+//                        mail.Attachments.Add(new Attachment(attach));
+//                    }
 
                     try
                     {
