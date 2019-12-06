@@ -1,22 +1,18 @@
-// <copyright file="PaypalEmailTest.cs" company="Acme">
+// <copyright file="PaypalReceiptTest.cs" company="Acme">
 // Copyright (c) Acme. All rights reserved.
 // </copyright>
 
-namespace Acme.Automation.Processors.Tests
+namespace Acme.Automation.Tests.Rules
 {
     using System;
-    using System.Linq;
 
     using Acme.Automation.Core;
     using Acme.Automation.Core.Configuration;
-    using Acme.Automation.Core.Models;
+    using Acme.Automation.Rules;
 
     using Xunit;
 
-    /// <summary>
-    /// Test the paypal email processor.
-    /// </summary>
-    public class PaypalEmailTest
+    public class PaypalReceiptTest
     {
         private const string EmailTextBodyContabo = @"
 
@@ -82,35 +78,48 @@ PayPal PPX001066:1.1:47fa0714522fd";
         {
             var message = new Message();
             message.Add("textBody", EmailTextBodyContabo);
+            message.Add("subject", "Fwd: Reçu pour votre paiement à CONTABO GmbH");
 
-            var job = this.CreateJob();
-            var processor = new PaypalEmail
+            var job = new Job
             {
-                ProcessorConfiguration = new Processor
+                Id = Guid.NewGuid().ToString(),
+            };
+
+            var rule = new PaypalReceipt
+            {
+                RuleConfiguration = new Rule
                 {
                     Id = Guid.NewGuid().ToString()
                 }
             };
-            processor.Execute(job, message);
 
-            var transaction = message.Get<TransactionInformation>(TransactionInformation.MessagePropertyName);
-            Assert.NotNull(transaction);
-            Assert.Equal(99.99M ,transaction.Amount);
-            Assert.Equal(string.Empty ,transaction.CardName);
-            Assert.Equal(string.Empty, transaction.Category);
-            Assert.Equal("PAYPAL*CONTABO" ,transaction.Creditor);
-            Assert.Equal("EUR" ,transaction.Currency);
-            Assert.Equal(string.Empty ,transaction.Note);
-            Assert.Equal("12345678901234567" ,transaction.Reference);
-            Assert.Equal(new DateTime(2019,11,19,5,38,51), transaction.UtcDate);
+            Assert.True(rule.IsMatch(job, message));
         }
 
-        private Job CreateJob()
+        [Theory]
+        [InlineData(null, null)]
+        [InlineData("this is a bad subject", EmailTextBodyContabo)]
+        [InlineData("Reçu pour votre paiement à CONTABO GmbH", "This is a bad body")]
+        public void ExecuteKoNotEmail(string subject, string textBody)
         {
-            return new Job
+            var message = new Message();
+            message.Add("textBody", textBody);
+            message.Add("subject", subject);
+
+            var job = new Job
             {
                 Id = Guid.NewGuid().ToString(),
             };
+
+            var rule = new PaypalReceipt
+            {
+                RuleConfiguration = new Rule
+                {
+                    Id = Guid.NewGuid().ToString()
+                }
+            };
+
+            Assert.False(rule.IsMatch(job, message));
         }
     }
 }

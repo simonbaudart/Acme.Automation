@@ -32,6 +32,11 @@ namespace Acme.Automation.Core
         /// <typeparam name="T">Type of the item.</typeparam>
         public void Add<T>(string key, T item)
         {
+            if (item == null)
+            {
+                return;
+            }
+
             this.Items[key] = JToken.FromObject(item);
         }
 
