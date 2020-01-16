@@ -22,6 +22,8 @@ namespace Acme.Automation.Processors
     {
         private static readonly Regex CurveParsing = new Regex(@"You made a purchase at:\s*(?<Note>.+?)\s+€(?<Amount>\d+\.\d+)\s+(?<Day>\d+)\s+(?<Month>\w+)\s+(?<Year>\d+)\s+(?<Hour>\d+):(?<Minute>\d+):(?<Second>\d+)\s+(?:.\d+\.\d+\s+)?(.+)On this card:\s+(?<Name>.+?)\n\s*(?<CardName>.+)");
 
+        private static readonly Regex RemoveTags = new Regex("<[^>]*>");
+
         /// <summary>
         /// The months.
         /// </summary>
@@ -44,8 +46,16 @@ namespace Acme.Automation.Processors
         /// <inheritdoc />
         protected override void Execute(EmptyConfiguration configuration, Message message)
         {
-            var textBody = message.Get<string>("textBody");
-            var match = CurveParsing.Match(textBody);
+            var content = message.Get<string>("textBody") ?? message.Get<string>("htmlBody");
+            content = RemoveTags.Replace(content, string.Empty);
+            var match = CurveParsing.Match(content);
+
+            if (!match.Success)
+            {
+                content = message.Get<string>("htmlBody") ?? message.Get<string>("textBody");
+                content = RemoveTags.Replace(content, string.Empty);
+                match = CurveParsing.Match(content);
+            }
 
             if (match.Success && Months.TryGetValue(match.Groups["Month"].Value, out var month))
             {
